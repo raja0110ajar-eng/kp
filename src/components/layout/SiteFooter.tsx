@@ -37,6 +37,11 @@ export function SiteFooter() {
                 Keranjang
               </Link>
             </li>
+            <li>
+              <Link href="/privasi" className={linkClass}>
+                Kebijakan privasi
+              </Link>
+            </li>
           </ul>
         </nav>
 

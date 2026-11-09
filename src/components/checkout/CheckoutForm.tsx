@@ -359,6 +359,14 @@ export function CheckoutForm({ zones, paymentSettings }: CheckoutFormProps) {
           Total final dihitung ulang oleh sistem saat pesanan dibuat.
         </p>
 
+        <p className="text-xs text-muted">
+          Dengan membuat pesanan, kamu menyetujui{' '}
+          <Link href="/privasi" className="font-semibold text-link underline">
+            kebijakan privasi
+          </Link>{' '}
+          kami.
+        </p>
+        
         {error ? (
           <p className="flex items-start gap-2 text-sm text-accent-ink" role="alert">
             <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden /> {error}

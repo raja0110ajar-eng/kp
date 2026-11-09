@@ -26,6 +26,24 @@ const nextConfig: NextConfig = {
       },
     },
   },
+  // Header keamanan dasar. CSP penuh sengaja belum dipasang: OCR memuat data dari CDN
+  // dan skrip tema berjalan inline, jadi CSP yang terlalu ketat bisa mematikan fitur itu.
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'X-Frame-Options', value: 'DENY' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=(), payment=(), usb=()',
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

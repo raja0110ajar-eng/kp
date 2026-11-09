@@ -4,6 +4,14 @@ const ERROR_MESSAGES: ReadonlyArray<readonly [string, string]> = [
     'too_many_attempts',
     'Terlalu banyak percobaan yang tidak cocok. Tunggu sekitar 15 menit lalu coba lagi, atau hubungi admin lewat WhatsApp.',
   ],
+  [
+    'too_many_orders',
+    'Terlalu banyak pesanan dari jaringan ini dalam satu jam terakhir. Coba lagi nanti, atau hubungi admin lewat WhatsApp.',
+  ],
+  [
+    'row-level security',
+    'Unggahan ditolak. Batas unggahan untuk pesanan ini mungkin sudah tercapai, atau pesanan sudah diproses. Hubungi admin lewat WhatsApp.',
+  ],
   ['insufficient_stock', 'Stok salah satu produk tidak mencukupi. Periksa kembali keranjangmu.'],
   ['product_unavailable', 'Salah satu produk sudah tidak tersedia. Periksa kembali keranjangmu.'],
   ['payment_method_unavailable', 'Metode pembayaran ini sedang tidak tersedia. Pilih metode lain.'],
