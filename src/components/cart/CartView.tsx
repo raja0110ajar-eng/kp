@@ -20,11 +20,11 @@ export function CartView() {
 
   if (items.length === 0) {
     return (
-      <div className="rounded-2xl bg-neutral-50 p-10 text-center">
-        <p className="text-neutral-700">Keranjangmu masih kosong.</p>
+      <div className="rounded-2xl bg-soft p-10 text-center">
+        <p className="text-ink-soft">Keranjangmu masih kosong.</p>
         <Link
           href="/products"
-          className="mt-4 inline-block rounded-lg bg-[#0066FF] px-5 py-2 font-semibold text-white transition hover:bg-[#1A73E8]"
+          className="mt-4 inline-block rounded-lg bg-primary px-5 py-2 font-semibold text-white transition hover:bg-primary-hover"
         >
           Lihat katalog
         </Link>
@@ -34,7 +34,7 @@ export function CartView() {
 
   if (productsState.status === 'loading') {
     return (
-      <p className="flex items-center gap-2 text-neutral-600">
+      <p className="flex items-center gap-2 text-muted">
         <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> Memuat keranjang…
       </p>
     );
@@ -42,7 +42,7 @@ export function CartView() {
 
   if (productsState.status === 'error' || !cart) {
     return (
-      <p className="flex items-center gap-2 text-[#FF6B00]" role="alert">
+      <p className="flex items-center gap-2 text-accent-ink" role="alert">
         <AlertTriangle className="h-4 w-4" aria-hidden /> Gagal memuat keranjang. Muat ulang halaman.
       </p>
     );
@@ -56,7 +56,7 @@ export function CartView() {
         {cart.lines.map((line) => (
           <li
             key={line.product.id}
-            className="flex gap-4 rounded-2xl border border-neutral-200 p-4"
+            className="flex gap-4 rounded-2xl border border-line p-4"
           >
             <div className="w-20 shrink-0 overflow-hidden rounded-lg">
               <ProductImage path={line.product.image_path} alt={line.product.name} sizes="80px" />
@@ -66,24 +66,24 @@ export function CartView() {
                 <div>
                   <Link
                     href={`/products/${line.product.slug}`}
-                    className="font-semibold hover:text-[#0066FF]"
+                    className="font-semibold hover:text-link"
                   >
                     {line.product.name}
                   </Link>
-                  <p className="text-sm text-neutral-600">{formatRupiah(line.product.price)}</p>
+                  <p className="text-sm text-muted">{formatRupiah(line.product.price)}</p>
                 </div>
                 <button
                   type="button"
                   aria-label={`Hapus ${line.product.name} dari keranjang`}
                   onClick={() => removeItem(line.product.id)}
-                  className="rounded-lg p-2 text-neutral-500 transition hover:bg-neutral-100 hover:text-[#FF6B00]"
+                  className="rounded-lg p-2 text-muted transition hover:bg-soft hover:text-accent-ink"
                 >
                   <Trash2 className="h-4 w-4" aria-hidden />
                 </button>
               </div>
 
               <div className="flex items-center justify-between">
-                <div className="inline-flex items-center rounded-lg border border-neutral-300">
+                <div className="inline-flex items-center rounded-lg border border-line-strong">
                   <button
                     type="button"
                     aria-label="Kurangi jumlah"
@@ -112,7 +112,7 @@ export function CartView() {
               </div>
 
               {line.adjusted ? (
-                <p className="text-xs text-[#FF6B00]">
+                <p className="text-xs text-accent-ink">
                   Jumlah disesuaikan dengan stok yang tersedia ({line.product.stock}).
                 </p>
               ) : null}
@@ -123,7 +123,7 @@ export function CartView() {
         {cart.blocked.map((blocked) => (
           <li
             key={blocked.productId}
-            className="flex items-center justify-between gap-4 rounded-2xl border border-[#FF6B00] bg-[#FF6B00]/5 p-4"
+            className="flex items-center justify-between gap-4 rounded-2xl border border-accent bg-accent/5 p-4"
           >
             <p className="text-sm">
               <strong>{blocked.product ? blocked.product.name : 'Produk'}</strong>{' '}
@@ -136,7 +136,7 @@ export function CartView() {
               type="button"
               aria-label="Hapus dari keranjang"
               onClick={() => removeItem(blocked.productId)}
-              className="rounded-lg p-2 text-[#FF6B00] transition hover:bg-[#FF6B00]/10"
+              className="rounded-lg p-2 text-accent-ink transition hover:bg-accent/10"
             >
               <Trash2 className="h-4 w-4" aria-hidden />
             </button>
@@ -144,23 +144,23 @@ export function CartView() {
         ))}
       </ul>
 
-      <div className="space-y-3 rounded-2xl bg-neutral-50 p-5">
+      <div className="space-y-3 rounded-2xl bg-soft p-5">
         <div className="flex items-center justify-between">
-          <span className="text-neutral-700">Subtotal</span>
+          <span className="text-ink-soft">Subtotal</span>
           <span className="text-xl font-extrabold">{formatRupiah(cart.subtotal)}</span>
         </div>
-        <p className="text-xs text-neutral-500">Ongkir dihitung di halaman checkout.</p>
+        <p className="text-xs text-muted">Ongkir dihitung di halaman checkout.</p>
         {canCheckout ? (
           <Link
             href="/checkout"
-            className="block rounded-lg bg-[#0066FF] px-4 py-3 text-center font-semibold text-white transition hover:bg-[#1A73E8]"
+            className="block rounded-lg bg-primary px-4 py-3 text-center font-semibold text-white transition hover:bg-primary-hover"
           >
             Lanjut ke checkout
           </Link>
         ) : (
           <span
             aria-disabled="true"
-            className="block rounded-lg bg-neutral-200 px-4 py-3 text-center font-semibold text-neutral-500"
+            className="block rounded-lg bg-sunken px-4 py-3 text-center font-semibold text-muted"
           >
             Lanjut ke checkout
           </span>

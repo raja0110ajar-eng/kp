@@ -27,14 +27,14 @@ interface CheckoutFormProps {
 }
 
 const inputClass =
-  'mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2 outline-none focus:border-[#0066FF]';
+  'mt-1 w-full rounded-lg border border-line-strong px-3 py-2 focus:border-primary';
 
 function choiceClass(selected: boolean, disabled = false): string {
   const base = 'flex cursor-pointer items-start gap-3 rounded-xl border p-3 transition';
-  if (disabled) return `${base} cursor-not-allowed border-neutral-200 opacity-50`;
+  if (disabled) return `${base} cursor-not-allowed border-line opacity-50`;
   return selected
-    ? `${base} border-[#0066FF] bg-[#0066FF]/5`
-    : `${base} border-neutral-200 hover:border-neutral-400`;
+    ? `${base} border-primary bg-primary/5`
+    : `${base} border-line hover:border-muted`;
 }
 
 export function CheckoutForm({ zones, paymentSettings }: CheckoutFormProps) {
@@ -76,7 +76,7 @@ export function CheckoutForm({ zones, paymentSettings }: CheckoutFormProps) {
 
   if (redirecting) {
     return (
-      <p className="flex items-center gap-2 text-neutral-600" aria-live="polite">
+      <p className="flex items-center gap-2 text-muted" aria-live="polite">
         <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> Pesanan dibuat, mengalihkan ke
         pembayaran…
       </p>
@@ -85,11 +85,11 @@ export function CheckoutForm({ zones, paymentSettings }: CheckoutFormProps) {
 
   if (cart.items.length === 0) {
     return (
-      <div className="rounded-2xl bg-neutral-50 p-10 text-center">
-        <p className="text-neutral-700">Keranjangmu kosong, belum ada yang bisa di-checkout.</p>
+      <div className="rounded-2xl bg-soft p-10 text-center">
+        <p className="text-ink-soft">Keranjangmu kosong, belum ada yang bisa di-checkout.</p>
         <Link
           href="/products"
-          className="mt-4 inline-block rounded-lg bg-[#0066FF] px-5 py-2 font-semibold text-white transition hover:bg-[#1A73E8]"
+          className="mt-4 inline-block rounded-lg bg-primary px-5 py-2 font-semibold text-white transition hover:bg-primary-hover"
         >
           Lihat katalog
         </Link>
@@ -99,7 +99,7 @@ export function CheckoutForm({ zones, paymentSettings }: CheckoutFormProps) {
 
   if (productsState.status === 'loading') {
     return (
-      <p className="flex items-center gap-2 text-neutral-600">
+      <p className="flex items-center gap-2 text-muted">
         <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> Memuat keranjang…
       </p>
     );
@@ -107,7 +107,7 @@ export function CheckoutForm({ zones, paymentSettings }: CheckoutFormProps) {
 
   if (productsState.status === 'error' || !built) {
     return (
-      <p className="flex items-center gap-2 text-[#FF6B00]" role="alert">
+      <p className="flex items-center gap-2 text-accent-ink" role="alert">
         <AlertTriangle className="h-4 w-4" aria-hidden /> Gagal memuat keranjang. Muat ulang halaman.
       </p>
     );
@@ -115,14 +115,14 @@ export function CheckoutForm({ zones, paymentSettings }: CheckoutFormProps) {
 
   if (built.blocked.length > 0 || built.lines.length === 0) {
     return (
-      <div className="rounded-2xl border border-[#FF6B00] bg-[#FF6B00]/5 p-6">
-        <p className="text-neutral-800">
+      <div className="rounded-2xl border border-accent bg-accent/5 p-6">
+        <p className="text-ink">
           Ada produk di keranjang yang habis atau sudah tidak tersedia. Rapikan keranjang dulu sebelum
           checkout.
         </p>
         <Link
           href="/cart"
-          className="mt-4 inline-block rounded-lg bg-[#0066FF] px-5 py-2 font-semibold text-white transition hover:bg-[#1A73E8]"
+          className="mt-4 inline-block rounded-lg bg-primary px-5 py-2 font-semibold text-white transition hover:bg-primary-hover"
         >
           Kembali ke keranjang
         </Link>
@@ -222,7 +222,7 @@ export function CheckoutForm({ zones, paymentSettings }: CheckoutFormProps) {
               onChange={(event) => setPhone(event.target.value)}
               className={inputClass}
             />
-            <span className="mt-1 block text-xs font-normal text-neutral-500">
+            <span className="mt-1 block text-xs font-normal text-muted">
               Dipakai untuk melacak pesanan tanpa login.
             </span>
           </label>
@@ -241,7 +241,7 @@ export function CheckoutForm({ zones, paymentSettings }: CheckoutFormProps) {
             />
             <span>
               <span className="block font-semibold">Area sekolah</span>
-              <span className="block text-sm text-neutral-600">
+              <span className="block text-sm text-muted">
                 Diantar ke kelas atau lokasi di sekolah · Gratis
               </span>
             </span>
@@ -258,7 +258,7 @@ export function CheckoutForm({ zones, paymentSettings }: CheckoutFormProps) {
             />
             <span>
               <span className="block font-semibold">Luar sekolah</span>
-              <span className="block text-sm text-neutral-600">
+              <span className="block text-sm text-muted">
                 {outsideAvailable
                   ? 'Diantar kurir tim kami, tarif sesuai zona'
                   : 'Belum tersedia, admin belum mengatur zona pengiriman'}
@@ -322,14 +322,14 @@ export function CheckoutForm({ zones, paymentSettings }: CheckoutFormProps) {
               />
               <span>
                 <span className="block font-semibold">{option.label}</span>
-                <span className="block text-sm text-neutral-600">{option.hint}</span>
+                <span className="block text-sm text-muted">{option.hint}</span>
               </span>
             </label>
           ))}
         </section>
       </div>
 
-      <aside className="h-fit space-y-4 rounded-2xl bg-neutral-50 p-5 lg:sticky lg:top-20">
+      <aside className="h-fit space-y-4 rounded-2xl bg-soft p-5 lg:sticky lg:top-20">
         <h2 className="text-lg font-bold">Ringkasan</h2>
         <ul className="space-y-2 text-sm">
           {built.lines.map((line) => (
@@ -341,7 +341,7 @@ export function CheckoutForm({ zones, paymentSettings }: CheckoutFormProps) {
             </li>
           ))}
         </ul>
-        <dl className="space-y-1 border-t border-neutral-200 pt-3 text-sm">
+        <dl className="space-y-1 border-t border-line pt-3 text-sm">
           <div className="flex justify-between">
             <dt>Subtotal</dt>
             <dd>{formatRupiah(built.subtotal)}</dd>
@@ -355,12 +355,12 @@ export function CheckoutForm({ zones, paymentSettings }: CheckoutFormProps) {
             <dd>{formatRupiah(totalEstimate)}</dd>
           </div>
         </dl>
-        <p className="text-xs text-neutral-500">
+        <p className="text-xs text-muted">
           Total final dihitung ulang oleh sistem saat pesanan dibuat.
         </p>
 
         {error ? (
-          <p className="flex items-start gap-2 text-sm text-[#FF6B00]" role="alert">
+          <p className="flex items-start gap-2 text-sm text-accent-ink" role="alert">
             <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden /> {error}
           </p>
         ) : null}
@@ -368,7 +368,7 @@ export function CheckoutForm({ zones, paymentSettings }: CheckoutFormProps) {
         <button
           type="submit"
           disabled={submitting}
-          className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#0066FF] px-4 py-3 font-semibold text-white transition hover:bg-[#1A73E8] disabled:opacity-60"
+          className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 font-semibold text-white transition hover:bg-primary-hover disabled:opacity-60"
         >
           {submitting ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : null}
           Buat pesanan

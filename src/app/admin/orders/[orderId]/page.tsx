@@ -35,7 +35,7 @@ export default async function AdminOrderDetailPage({
     <main className="mx-auto max-w-4xl space-y-6">
       <Link
         href="/admin/orders"
-        className="inline-flex items-center gap-2 text-sm font-semibold text-neutral-600 hover:text-[#0066FF]"
+        className="inline-flex items-center gap-2 text-sm font-semibold text-muted hover:text-link"
       >
         <ArrowLeft className="h-4 w-4" aria-hidden />
         Kembali ke daftar pesanan
@@ -44,7 +44,7 @@ export default async function AdminOrderDetailPage({
       <header className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h1 className="text-2xl font-extrabold tracking-tight">{order.orderCode}</h1>
-          <p className="text-sm text-neutral-600">Dibuat {formatDateTime(order.createdAt)}</p>
+          <p className="text-sm text-muted">Dibuat {formatDateTime(order.createdAt)}</p>
         </div>
         <StatusBadge tone={statusMeta.tone}>{statusMeta.label}</StatusBadge>
       </header>
@@ -66,27 +66,27 @@ export default async function AdminOrderDetailPage({
         </div>
         <dl className="grid gap-3 text-sm sm:grid-cols-2">
           <div>
-            <dt className="text-xs text-neutral-500">Nama</dt>
+            <dt className="text-xs text-muted">Nama</dt>
             <dd className="font-semibold">{order.customerName}</dd>
           </div>
           <div>
-            <dt className="text-xs text-neutral-500">Nomor HP</dt>
+            <dt className="text-xs text-muted">Nomor HP</dt>
             <dd className="font-semibold">{order.customerPhone}</dd>
           </div>
           <div>
-            <dt className="text-xs text-neutral-500">Area</dt>
+            <dt className="text-xs text-muted">Area</dt>
             <dd className="font-semibold">
               {DELIVERY_AREA_LABEL[order.deliveryArea]}
               {order.shippingZoneName ? ` · ${order.shippingZoneName}` : ''}
             </dd>
           </div>
           <div className="sm:col-span-2">
-            <dt className="text-xs text-neutral-500">Alamat atau lokasi pengantaran</dt>
+            <dt className="text-xs text-muted">Alamat atau lokasi pengantaran</dt>
             <dd className="whitespace-pre-line font-semibold">{order.deliveryAddress}</dd>
           </div>
           {order.notes ? (
             <div className="sm:col-span-2">
-              <dt className="text-xs text-neutral-500">Catatan pembeli</dt>
+              <dt className="text-xs text-muted">Catatan pembeli</dt>
               <dd className="whitespace-pre-line">{order.notes}</dd>
             </div>
           ) : null}
@@ -95,18 +95,18 @@ export default async function AdminOrderDetailPage({
 
       <section className={`${cardClass} space-y-3`}>
         <h2 className="text-lg font-bold">Item pesanan</h2>
-        <ul className="divide-y divide-neutral-100 text-sm">
+        <ul className="divide-y divide-line text-sm">
           {order.items.map((item) => (
             <li key={`${item.productName}-${item.unitPrice}`} className="flex justify-between gap-3 py-2">
               <span>
                 {item.productName} × {item.quantity}
-                <span className="block text-xs text-neutral-500">{formatRupiah(item.unitPrice)} / item</span>
+                <span className="block text-xs text-muted">{formatRupiah(item.unitPrice)} / item</span>
               </span>
               <span className="font-semibold">{formatRupiah(item.lineTotal)}</span>
             </li>
           ))}
         </ul>
-        <dl className="space-y-1 border-t border-neutral-200 pt-3 text-sm">
+        <dl className="space-y-1 border-t border-line pt-3 text-sm">
           <div className="flex justify-between">
             <dt>Subtotal</dt>
             <dd>{formatRupiah(order.subtotal)}</dd>
@@ -135,13 +135,13 @@ export default async function AdminOrderDetailPage({
             </StatusBadge>
           </div>
           {payment.verifiedAt ? (
-            <p className="text-xs text-neutral-500">Diproses admin pada {formatDateTime(payment.verifiedAt)}</p>
+            <p className="text-xs text-muted">Diproses admin pada {formatDateTime(payment.verifiedAt)}</p>
           ) : null}
           {payment.adminNote ? (
-            <p className="rounded-lg bg-neutral-50 p-3 text-sm">Catatan admin: {payment.adminNote}</p>
+            <p className="rounded-lg bg-soft p-3 text-sm">Catatan admin: {payment.adminNote}</p>
           ) : null}
           {payment.verificationStatus === 'awaiting_review' ? (
-            <Link href="/admin/payments" className="inline-block text-sm font-semibold text-[#0066FF] underline">
+            <Link href="/admin/payments" className="inline-block text-sm font-semibold text-link underline">
               Buka di antrean verifikasi
             </Link>
           ) : null}
@@ -152,7 +152,7 @@ export default async function AdminOrderDetailPage({
                 src={payment.proofUrl}
                 alt={`Bukti transfer pesanan ${order.orderCode}`}
                 loading="lazy"
-                className="max-h-72 w-auto rounded-lg border border-neutral-200"
+                className="max-h-72 w-auto rounded-lg border border-line"
               />
             </a>
           ) : null}

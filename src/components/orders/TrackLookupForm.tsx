@@ -10,7 +10,7 @@ import { trackOrderDetail } from '@/lib/orders/track-detail';
 import { isValidPhone, normalizePhone } from '@/lib/phone';
 
 const inputClass =
-  'mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2 outline-none focus:border-[#0066FF]';
+  'mt-1 w-full rounded-lg border border-line-strong px-3 py-2 focus:border-primary';
 
 export function TrackLookupForm() {
   const router = useRouter();
@@ -55,11 +55,11 @@ export function TrackLookupForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-4 rounded-2xl border border-neutral-200 bg-white p-5"
+      className="space-y-4 rounded-2xl border border-line bg-surface p-5"
     >
       <div>
         <h2 className="text-lg font-bold">Lacak dengan kode pesanan</h2>
-        <p className="text-sm text-neutral-600">
+        <p className="text-sm text-muted">
           Kode pesanan ada di halaman setelah checkout. Nomor HP harus sama dengan yang kamu isi saat
           checkout.
         </p>
@@ -93,7 +93,7 @@ export function TrackLookupForm() {
       </div>
 
       {error ? (
-        <p className="flex items-start gap-2 text-sm text-[#FF6B00]" role="alert">
+        <p className="flex items-start gap-2 text-sm text-accent-ink" role="alert">
           <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden /> {error}
         </p>
       ) : null}
@@ -101,7 +101,7 @@ export function TrackLookupForm() {
       <button
         type="submit"
         disabled={submitting}
-        className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#0066FF] px-5 py-2 font-semibold text-white transition hover:bg-[#1A73E8] disabled:opacity-60"
+        className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-5 py-2 font-semibold text-white transition hover:bg-primary-hover disabled:opacity-60"
       >
         {submitting ? (
           <Loader2 className="h-4 w-4 animate-spin" aria-hidden />

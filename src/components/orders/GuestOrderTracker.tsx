@@ -77,7 +77,7 @@ export function GuestOrderTracker({ orderCode }: { orderCode: string }) {
 
   if (view.kind === 'loading') {
     return (
-      <p className="flex items-center gap-2 text-neutral-600">
+      <p className="flex items-center gap-2 text-muted">
         <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> Memuat pesanan…
       </p>
     );
@@ -87,7 +87,7 @@ export function GuestOrderTracker({ orderCode }: { orderCode: string }) {
     return (
       <form onSubmit={handlePhoneSubmit} className="space-y-4">
         <h1 className="text-2xl font-extrabold tracking-tight">Pesanan {orderCode}</h1>
-        <p className="text-sm text-neutral-600">Masukkan nomor HP yang kamu pakai saat checkout.</p>
+        <p className="text-sm text-muted">Masukkan nomor HP yang kamu pakai saat checkout.</p>
         <input
           type="tel"
           required
@@ -96,13 +96,13 @@ export function GuestOrderTracker({ orderCode }: { orderCode: string }) {
           aria-label="Nomor HP"
           value={phoneInput}
           onChange={(event) => setPhoneInput(event.target.value)}
-          className="w-full rounded-lg border border-neutral-300 px-3 py-2 outline-none focus:border-[#0066FF]"
+          className="w-full rounded-lg border border-line-strong px-3 py-2 focus:border-primary"
         />
-        {view.error ? <p className="text-sm text-[#FF6B00]">{view.error}</p> : null}
+        {view.error ? <p className="text-sm text-accent-ink">{view.error}</p> : null}
         <button
           type="submit"
           disabled={submitting}
-          className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#0066FF] px-4 py-2 font-semibold text-white transition hover:bg-[#1A73E8] disabled:opacity-60"
+          className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2 font-semibold text-white transition hover:bg-primary-hover disabled:opacity-60"
         >
           {submitting ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : null}
           Lihat pesanan
@@ -114,14 +114,14 @@ export function GuestOrderTracker({ orderCode }: { orderCode: string }) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-end gap-3">
-        <span className="hidden text-xs text-neutral-500 sm:inline">
+        <span className="hidden text-xs text-muted sm:inline">
           Diperbarui otomatis tiap {POLL_INTERVAL_MS / 1000} detik
         </span>
         <button
           type="button"
           onClick={handleRefresh}
           disabled={refreshing}
-          className="inline-flex items-center gap-2 rounded-lg border border-neutral-300 bg-white px-4 py-2 text-sm font-semibold transition hover:bg-neutral-100 disabled:opacity-50"
+          className="inline-flex items-center gap-2 rounded-lg border border-line-strong bg-surface px-4 py-2 text-sm font-semibold transition hover:bg-soft disabled:opacity-50"
         >
           <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} aria-hidden />
           Muat ulang

@@ -35,7 +35,7 @@ export default async function AdminOrdersPage({
     <main className="mx-auto max-w-6xl space-y-6">
       <header>
         <h1 className="text-2xl font-extrabold tracking-tight">Pesanan</h1>
-        <p className="text-sm text-neutral-600">{list.total} pesanan ditemukan.</p>
+        <p className="text-sm text-muted">{list.total} pesanan ditemukan.</p>
       </header>
 
       <form action="/admin/orders" method="get" className={`${cardClass} flex flex-wrap items-end gap-3`}>
@@ -61,13 +61,13 @@ export default async function AdminOrdersPage({
       </form>
 
       {list.items.length === 0 ? (
-        <p className="rounded-2xl bg-white p-10 text-center text-neutral-600">
+        <p className="rounded-2xl bg-surface p-10 text-center text-muted">
           Tidak ada pesanan yang cocok.
         </p>
       ) : (
-        <div className="overflow-x-auto rounded-2xl border border-neutral-200 bg-white">
+        <div className="overflow-x-auto rounded-2xl border border-line bg-surface">
           <table className="w-full min-w-[760px] text-left text-sm">
-            <thead className="border-b border-neutral-200 bg-neutral-50 text-xs uppercase text-neutral-500">
+            <thead className="border-b border-line bg-soft text-xs uppercase text-muted">
               <tr>
                 <th className="px-4 py-3">Kode</th>
                 <th className="px-4 py-3">Pembeli</th>
@@ -85,15 +85,15 @@ export default async function AdminOrdersPage({
                   ? VERIFICATION_META[order.verificationStatus]
                   : null;
                 return (
-                  <tr key={order.id} className="border-b border-neutral-100 last:border-0">
+                  <tr key={order.id} className="border-b border-line last:border-0">
                     <td className="px-4 py-3 font-semibold">
-                      <Link href={`/admin/orders/${order.id}`} className="text-[#0066FF] hover:underline">
+                      <Link href={`/admin/orders/${order.id}`} className="text-link hover:underline">
                         {order.orderCode}
                       </Link>
                     </td>
                     <td className="px-4 py-3">
                       <p>{order.customerName}</p>
-                      <p className="text-xs text-neutral-500">{order.customerPhone}</p>
+                      <p className="text-xs text-muted">{order.customerPhone}</p>
                     </td>
                     <td className="px-4 py-3">{DELIVERY_AREA_LABEL[order.deliveryArea]}</td>
                     <td className="px-4 py-3 font-semibold">{formatRupiah(order.total)}</td>
@@ -106,7 +106,7 @@ export default async function AdminOrdersPage({
                     <td className="px-4 py-3">
                       <StatusBadge tone={orderMeta.tone}>{orderMeta.label}</StatusBadge>
                     </td>
-                    <td className="px-4 py-3 text-xs text-neutral-600">{formatDateTime(order.createdAt)}</td>
+                    <td className="px-4 py-3 text-xs text-muted">{formatDateTime(order.createdAt)}</td>
                   </tr>
                 );
               })}

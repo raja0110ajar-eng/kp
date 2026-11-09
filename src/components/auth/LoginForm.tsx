@@ -60,7 +60,7 @@ export function LoginForm({ next }: { next: string }) {
           autoComplete="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2 outline-none focus:border-[#0066FF]"
+          className="mt-1 w-full rounded-lg border border-line-strong px-3 py-2 focus:border-primary"
         />
       </label>
 
@@ -73,16 +73,16 @@ export function LoginForm({ next }: { next: string }) {
           autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2 outline-none focus:border-[#0066FF]"
+          className="mt-1 w-full rounded-lg border border-line-strong px-3 py-2 focus:border-primary"
         />
       </label>
 
-      {message ? <p className="text-sm text-[#FF6B00]">{message}</p> : null}
+      {message ? <p className="text-sm text-accent-ink">{message}</p> : null}
 
       <button
         type="submit"
         disabled={loading}
-        className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#0066FF] px-4 py-2 font-semibold text-white transition hover:bg-[#1A73E8] disabled:opacity-60"
+        className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2 font-semibold text-white transition hover:bg-primary-hover disabled:opacity-60"
       >
         {loading ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : null}
         {mode === 'signin' ? 'Masuk' : 'Daftar'}
@@ -94,7 +94,7 @@ export function LoginForm({ next }: { next: string }) {
           setMode(mode === 'signin' ? 'signup' : 'signin');
           setMessage(null);
         }}
-        className="w-full text-sm text-neutral-600 underline"
+        className="w-full text-sm text-muted underline"
       >
         {mode === 'signin' ? 'Belum punya akun? Daftar' : 'Sudah punya akun? Masuk'}
       </button>

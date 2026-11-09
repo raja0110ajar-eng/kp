@@ -27,7 +27,7 @@ export function ProductActiveToggle({
       <button type="button" onClick={handleClick} disabled={pending} className={secondaryButtonClass}>
         {isActive ? 'Nonaktifkan' : 'Aktifkan'}
       </button>
-      {error ? <p className="mt-1 text-xs text-[#FF6B00]">{error}</p> : null}
+      {error ? <p className="mt-1 text-xs text-accent-ink">{error}</p> : null}
     </div>
   );
 }

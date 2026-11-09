@@ -31,7 +31,7 @@ export default async function OrderTrackingPage({
     <main className="mx-auto max-w-3xl space-y-6 px-4 py-8">
       <Link
         href="/orders"
-        className="inline-flex items-center gap-2 text-sm font-semibold text-neutral-600 hover:text-[#0066FF]"
+        className="inline-flex items-center gap-2 text-sm font-semibold text-muted hover:text-link"
       >
         <ArrowLeft className="h-4 w-4" aria-hidden />
         Semua pesanan

@@ -138,7 +138,7 @@ export function PaymentSettingForm({
 
       {state.status !== 'idle' ? (
         <p
-          className={`text-sm ${state.status === 'success' ? 'text-emerald-700' : 'text-[#FF6B00]'}`}
+          className={`text-sm ${state.status === 'success' ? 'text-success-ink' : 'text-accent-ink'}`}
           role={state.status === 'error' ? 'alert' : 'status'}
         >
           {state.message}

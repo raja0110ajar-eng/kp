@@ -18,7 +18,7 @@ export default async function AdminPaymentSettingsPage() {
     <main className="mx-auto max-w-3xl space-y-6">
       <header>
         <h1 className="text-2xl font-extrabold tracking-tight">Setelan pembayaran</h1>
-        <p className="text-sm text-neutral-600">
+        <p className="text-sm text-muted">
           Tujuan pembayaran yang dilihat pembeli setelah checkout. COD selalu tersedia dan tidak perlu
           diatur. Metode hanya bisa diaktifkan jika datanya lengkap (QRIS wajib bergambar, lainnya wajib
           bernomor).

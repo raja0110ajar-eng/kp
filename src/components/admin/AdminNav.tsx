@@ -34,11 +34,11 @@ export function AdminNav() {
   }
 
   return (
-    <aside className="border-b border-neutral-200 bg-white md:sticky md:top-0 md:h-screen md:w-60 md:shrink-0 md:border-b-0 md:border-r">
+    <aside className="border-b border-line bg-surface md:sticky md:top-0 md:h-screen md:w-60 md:shrink-0 md:border-b-0 md:border-r">
       <div className="flex items-center justify-between px-4 py-3 md:block md:py-5">
-        <Link href="/admin" className="text-lg font-extrabold tracking-tight text-[#0066FF]">
+        <Link href="/admin" className="text-lg font-extrabold tracking-tight text-link">
           Karsa Pandiga
-          <span className="ml-2 text-xs font-semibold text-neutral-500">Admin</span>
+          <span className="ml-2 text-xs font-semibold text-muted">Admin</span>
         </Link>
       </div>
 
@@ -55,7 +55,7 @@ export function AdminNav() {
               href={item.href}
               aria-current={active ? 'page' : undefined}
               className={`flex items-center gap-2 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold transition ${
-                active ? 'bg-[#0066FF] text-white' : 'text-neutral-700 hover:bg-neutral-100'
+                active ? 'bg-primary text-white' : 'text-ink-soft hover:bg-soft'
               }`}
             >
               <Icon className="h-4 w-4" aria-hidden />
@@ -69,7 +69,7 @@ export function AdminNav() {
         <button
           type="button"
           onClick={handleSignOut}
-          className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-neutral-600 transition hover:bg-neutral-100"
+          className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-muted transition hover:bg-soft"
         >
           <LogOut className="h-4 w-4" aria-hidden />
           Keluar

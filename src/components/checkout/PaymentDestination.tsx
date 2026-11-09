@@ -30,11 +30,11 @@ export function PaymentDestination({ setting }: { setting: PaymentSetting }) {
   }
 
   return (
-    <section className="space-y-3 rounded-2xl border border-neutral-200 p-5">
+    <section className="space-y-3 rounded-2xl border border-line p-5">
       <h2 className="text-lg font-bold">Bayar lewat {setting.display_name}</h2>
 
       {setting.method === 'qris' && setting.qris_image_path ? (
-        <div className="mx-auto w-full max-w-xs overflow-hidden rounded-xl border border-neutral-200 bg-white p-2">
+        <div className="mx-auto w-full max-w-xs overflow-hidden rounded-xl border border-line bg-white p-2">
           {/* unoptimized: QRIS tidak boleh dikompres ulang agar tetap terbaca scanner. */}
           <Image
             src={getPublicAssetUrl(setting.qris_image_path)}
@@ -50,14 +50,14 @@ export function PaymentDestination({ setting }: { setting: PaymentSetting }) {
       {setting.account_number ? (
         <div className="space-y-1">
           {setting.account_name ? (
-            <p className="text-sm text-neutral-600">a.n. {setting.account_name}</p>
+            <p className="text-sm text-muted">a.n. {setting.account_name}</p>
           ) : null}
-          <div className="flex items-center justify-between gap-3 rounded-xl bg-neutral-50 px-4 py-3">
+          <div className="flex items-center justify-between gap-3 rounded-xl bg-soft px-4 py-3">
             <span className="text-lg font-bold tracking-wide">{setting.account_number}</span>
             <button
               type="button"
               onClick={copyNumber}
-              className="inline-flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm font-semibold text-[#0066FF] transition hover:bg-[#0066FF]/10"
+              className="inline-flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm font-semibold text-link transition hover:bg-primary/10"
             >
               {copied ? (
                 <Check className="h-4 w-4" aria-hidden />
@@ -71,7 +71,7 @@ export function PaymentDestination({ setting }: { setting: PaymentSetting }) {
       ) : null}
 
       {setting.instructions ? (
-        <p className="text-sm text-neutral-700">{setting.instructions}</p>
+        <p className="text-sm text-ink-soft">{setting.instructions}</p>
       ) : null}
     </section>
   );

@@ -36,14 +36,14 @@ export default async function ProductDetailPage({
     <main className="mx-auto max-w-5xl px-4 py-8">
       <Link
         href="/products"
-        className="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-neutral-600 hover:text-[#0066FF]"
+        className="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-muted hover:text-link"
       >
         <ArrowLeft className="h-4 w-4" aria-hidden />
         Kembali ke katalog
       </Link>
 
       <div className="grid gap-8 md:grid-cols-2">
-        <div className="overflow-hidden rounded-2xl border border-neutral-200">
+        <div className="overflow-hidden rounded-2xl border border-line">
           <ProductImage path={product.image_path} alt={product.name} sizes="(min-width: 768px) 50vw, 100vw" />
         </div>
 
@@ -54,10 +54,10 @@ export default async function ProductDetailPage({
             {PRODUCT_TYPE_LABEL[product.product_type]}
           </span>
           <h1 className="text-3xl font-extrabold tracking-tight">{product.name}</h1>
-          <p className="text-2xl font-bold text-[#0066FF]">{formatRupiah(product.price)}</p>
-          <p className="text-sm font-medium text-neutral-600">{stockLabel}</p>
+          <p className="text-2xl font-bold text-link">{formatRupiah(product.price)}</p>
+          <p className="text-sm font-medium text-muted">{stockLabel}</p>
           {product.description ? (
-            <p className="whitespace-pre-line text-neutral-700">{product.description}</p>
+            <p className="whitespace-pre-line text-ink-soft">{product.description}</p>
           ) : null}
           <AddToCartButton productId={product.id} stock={product.stock} />
         </div>

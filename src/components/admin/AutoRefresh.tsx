@@ -25,7 +25,7 @@ export function AutoRefresh({ intervalMs = 30_000 }: { intervalMs?: number }) {
 
   return (
     <div className="flex items-center gap-3">
-      <span className="hidden text-xs text-neutral-500 sm:inline">
+      <span className="hidden text-xs text-muted sm:inline">
         Diperbarui otomatis tiap {Math.round(intervalMs / 1000)} detik
       </span>
       <button type="button" onClick={refresh} disabled={pending} className={secondaryButtonClass}>

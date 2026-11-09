@@ -69,31 +69,31 @@ export function PaymentReviewCard({ review }: { review: AdminPaymentReview }) {
         <div>
           <Link
             href={`/admin/orders/${review.orderId}`}
-            className="text-lg font-extrabold text-[#0066FF] hover:underline"
+            className="text-lg font-extrabold text-link hover:underline"
           >
             {review.orderCode}
           </Link>
-          <p className="text-sm text-neutral-700">
+          <p className="text-sm text-ink-soft">
             {review.customerName} · {review.customerPhone}
           </p>
-          <p className="text-xs text-neutral-500">
+          <p className="text-xs text-muted">
             {PAYMENT_METHOD_LABEL[review.method]} · menunggu sejak {formatDateTime(review.waitingSince)}
           </p>
         </div>
         <div className="text-right">
-          <p className="text-xs text-neutral-500">Total yang diharapkan</p>
+          <p className="text-xs text-muted">Total yang diharapkan</p>
           <p className="text-2xl font-extrabold">{formatRupiah(review.expectedAmount)}</p>
         </div>
       </header>
 
-      <section className="space-y-2 rounded-xl bg-neutral-50 p-4">
+      <section className="space-y-2 rounded-xl bg-soft p-4">
         <div className="flex flex-wrap items-center gap-2">
           <StatusBadge tone={aiMeta.tone}>{aiMeta.label}</StatusBadge>
           {review.confidence !== null && !isCod ? (
-            <span className="text-xs text-neutral-500">confidence OCR {review.confidence}</span>
+            <span className="text-xs text-muted">confidence OCR {review.confidence}</span>
           ) : null}
         </div>
-        <p className="text-sm text-neutral-700">
+        <p className="text-sm text-ink-soft">
           {describeAiResult({
             aiStatus: review.aiStatus,
             expectedAmount: review.expectedAmount,
@@ -105,9 +105,9 @@ export function PaymentReviewCard({ review }: { review: AdminPaymentReview }) {
 
         {!isCod ? (
           <div>
-            <p className="text-xs font-semibold text-neutral-500">Nominal yang terbaca</p>
+            <p className="text-xs font-semibold text-muted">Nominal yang terbaca</p>
             {review.detectedAmounts.length === 0 ? (
-              <p className="text-sm text-neutral-500">Tidak ada.</p>
+              <p className="text-sm text-muted">Tidak ada.</p>
             ) : (
               <ul className="mt-1 flex flex-wrap gap-2">
                 {review.detectedAmounts.map((amount) => (
@@ -115,8 +115,8 @@ export function PaymentReviewCard({ review }: { review: AdminPaymentReview }) {
                     key={amount}
                     className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${
                       amount === review.expectedAmount
-                        ? 'bg-emerald-100 text-emerald-700'
-                        : 'bg-white text-neutral-700 ring-1 ring-neutral-200'
+                        ? 'bg-success-soft text-success-ink'
+                        : 'bg-surface text-ink-soft ring-1 ring-line'
                     }`}
                   >
                     {formatRupiah(amount)}
@@ -129,10 +129,10 @@ export function PaymentReviewCard({ review }: { review: AdminPaymentReview }) {
 
         {review.rawText ? (
           <details className="text-sm">
-            <summary className="cursor-pointer text-xs font-semibold text-[#0066FF]">
+            <summary className="cursor-pointer text-xs font-semibold text-link">
               Teks mentah hasil OCR
             </summary>
-            <pre className="mt-2 max-h-48 overflow-auto whitespace-pre-wrap rounded-lg bg-white p-3 text-xs text-neutral-700">
+            <pre className="mt-2 max-h-48 overflow-auto whitespace-pre-wrap rounded-lg bg-surface p-3 text-xs text-ink-soft">
               {review.rawText}
             </pre>
           </details>
@@ -147,20 +147,20 @@ export function PaymentReviewCard({ review }: { review: AdminPaymentReview }) {
               src={review.proofUrl}
               alt={`Bukti transfer pesanan ${review.orderCode}`}
               loading="lazy"
-              className="max-h-96 w-auto rounded-lg border border-neutral-200"
+              className="max-h-96 w-auto rounded-lg border border-line"
             />
           </a>
         ) : (
-          <p className="flex items-center gap-2 text-sm text-[#FF6B00]">
+          <p className="flex items-center gap-2 text-sm text-accent-ink">
             <AlertTriangle className="h-4 w-4" aria-hidden />
             Foto bukti tidak bisa dimuat. Muat ulang halaman, atau periksa file di Storage.
           </p>
         )
       ) : null}
 
-      {message ? <p className="text-sm font-semibold text-emerald-700">{message}</p> : null}
+      {message ? <p className="text-sm font-semibold text-success-ink">{message}</p> : null}
       {error ? (
-        <p className="flex items-start gap-2 text-sm text-[#FF6B00]" role="alert">
+        <p className="flex items-start gap-2 text-sm text-accent-ink" role="alert">
           <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden /> {error}
         </p>
       ) : null}
@@ -190,7 +190,7 @@ export function PaymentReviewCard({ review }: { review: AdminPaymentReview }) {
       ) : null}
 
       {mode === 'confirm-verify' ? (
-        <div className="space-y-3 rounded-xl border border-[#0066FF] bg-[#0066FF]/5 p-4">
+        <div className="space-y-3 rounded-xl border border-primary bg-primary/5 p-4">
           <p className="text-sm">
             {isCod
               ? 'Pesanan akan dikonfirmasi: stok produk berkurang dan status menjadi Diproses.'
@@ -214,7 +214,7 @@ export function PaymentReviewCard({ review }: { review: AdminPaymentReview }) {
       ) : null}
 
       {mode === 'reject' ? (
-        <div className="space-y-3 rounded-xl border border-[#FF6B00] bg-[#FF6B00]/5 p-4">
+        <div className="space-y-3 rounded-xl border border-accent bg-accent/5 p-4">
           <label className="block text-sm font-medium">
             Alasan penolakan (wajib, dilihat pembeli)
             <textarea
@@ -231,16 +231,16 @@ export function PaymentReviewCard({ review }: { review: AdminPaymentReview }) {
                 key={reason}
                 type="button"
                 onClick={() => setNote(reason)}
-                className="rounded-full border border-neutral-300 bg-white px-3 py-1 text-xs font-semibold transition hover:bg-neutral-100"
+                className="rounded-full border border-line-strong bg-surface px-3 py-1 text-xs font-semibold transition hover:bg-soft"
               >
                 {reason}
               </button>
             ))}
           </div>
           {isCod ? (
-            <p className="text-xs text-neutral-600">Pesanan COD yang ditolak akan dibatalkan.</p>
+            <p className="text-xs text-muted">Pesanan COD yang ditolak akan dibatalkan.</p>
           ) : (
-            <p className="text-xs text-neutral-600">Pembeli bisa mengunggah bukti baru setelah ditolak.</p>
+            <p className="text-xs text-muted">Pembeli bisa mengunggah bukti baru setelah ditolak.</p>
           )}
           <div className="flex gap-2">
             <button

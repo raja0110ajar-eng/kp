@@ -41,7 +41,7 @@ export function AddToCartButton({ productId, stock }: AddToCartButtonProps) {
       <button
         type="button"
         disabled
-        className="w-full rounded-lg bg-neutral-200 px-4 py-3 font-semibold text-neutral-500"
+        className="w-full rounded-lg bg-sunken px-4 py-3 font-semibold text-muted"
       >
         Stok habis
       </button>
@@ -52,7 +52,7 @@ export function AddToCartButton({ productId, stock }: AddToCartButtonProps) {
     <div className="space-y-3">
       <div className="flex items-center gap-3">
         <span className="text-sm font-medium">Jumlah</span>
-        <div className="inline-flex items-center rounded-lg border border-neutral-300">
+        <div className="inline-flex items-center rounded-lg border border-line-strong">
           <button
             type="button"
             aria-label="Kurangi jumlah"
@@ -81,7 +81,7 @@ export function AddToCartButton({ productId, stock }: AddToCartButtonProps) {
         type="button"
         onClick={handleAdd}
         disabled={atLimit}
-        className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#0066FF] px-4 py-3 font-semibold text-white transition hover:bg-[#1A73E8] disabled:opacity-50"
+        className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 font-semibold text-white transition hover:bg-primary-hover disabled:opacity-50"
       >
         {added ? (
           <Check className="h-5 w-5" aria-hidden />
@@ -92,9 +92,9 @@ export function AddToCartButton({ productId, stock }: AddToCartButtonProps) {
       </button>
 
       {inCart > 0 ? (
-        <p className="text-sm text-neutral-600">
+        <p className="text-sm text-muted">
           {inCart} item ini sudah ada di keranjang.{' '}
-          <Link href="/cart" className="font-semibold text-[#0066FF] underline">
+          <Link href="/cart" className="font-semibold text-link underline">
             Lihat keranjang
           </Link>
         </p>

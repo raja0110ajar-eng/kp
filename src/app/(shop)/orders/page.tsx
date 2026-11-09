@@ -34,7 +34,7 @@ export default async function OrdersPage({
     <main className="mx-auto max-w-3xl space-y-8 px-4 py-8">
       <header>
         <h1 className="text-3xl font-extrabold tracking-tight">Pesanan</h1>
-        <p className="text-sm text-neutral-600">
+        <p className="text-sm text-muted">
           {list
             ? 'Pesanan yang kamu buat saat login ada di bawah ini.'
             : 'Lacak pesananmu dengan kode pesanan dan nomor HP, tanpa perlu login.'}
@@ -44,7 +44,7 @@ export default async function OrdersPage({
       {list ? (
         <section className="space-y-4" aria-label="Daftar pesanan saya">
           {list.items.length === 0 ? (
-            <p className="rounded-2xl bg-neutral-50 p-8 text-center text-neutral-600">
+            <p className="rounded-2xl bg-soft p-8 text-center text-muted">
               Belum ada pesanan atas akun ini. Pesanan yang dibuat sebelum login atau tanpa login bisa
               dilacak lewat kode pesanan di bawah.
             </p>
@@ -56,13 +56,13 @@ export default async function OrdersPage({
                   <li key={order.orderCode}>
                     <Link
                       href={`/orders/${order.orderCode}`}
-                      className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-neutral-200 bg-white p-4 transition hover:shadow-md"
+                      className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-line bg-surface p-4 transition hover:shadow-md"
                     >
                       <div>
-                        <p className="font-extrabold text-[#0066FF]">{order.orderCode}</p>
-                        <p className="text-xs text-neutral-500">{formatDateTime(order.createdAt)}</p>
+                        <p className="font-extrabold text-link">{order.orderCode}</p>
+                        <p className="text-xs text-muted">{formatDateTime(order.createdAt)}</p>
                         {order.paymentMethod ? (
-                          <p className="text-xs text-neutral-500">
+                          <p className="text-xs text-muted">
                             {PAYMENT_METHOD_LABEL[order.paymentMethod]}
                           </p>
                         ) : null}
@@ -91,9 +91,9 @@ export default async function OrdersPage({
       <TrackLookupForm />
 
       {!list ? (
-        <p className="text-sm text-neutral-600">
+        <p className="text-sm text-muted">
           Punya akun?{' '}
-          <Link href="/login?next=/orders" className="font-semibold text-[#0066FF] underline">
+          <Link href="/login?next=/orders" className="font-semibold text-link underline">
             Masuk
           </Link>{' '}
           untuk melihat semua pesananmu di satu tempat.

@@ -28,7 +28,7 @@ export default async function PaymentQueuePage({
       <header className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-extrabold tracking-tight">Antrean verifikasi</h1>
-          <p className="text-sm text-neutral-600">
+          <p className="text-sm text-muted">
             Yang paling lama menunggu ada di atas. {reviews.length} menunggu.
           </p>
         </div>
@@ -45,8 +45,8 @@ export default async function PaymentQueuePage({
               aria-current={active ? 'page' : undefined}
               className={`rounded-full border px-4 py-1.5 text-sm font-semibold transition ${
                 active
-                  ? 'border-[#0066FF] bg-[#0066FF] text-white'
-                  : 'border-neutral-300 bg-white hover:border-neutral-500'
+                  ? 'border-primary bg-primary text-white'
+                  : 'border-line-strong bg-surface hover:border-muted'
               }`}
             >
               {tab.label}
@@ -56,7 +56,7 @@ export default async function PaymentQueuePage({
       </nav>
 
       {reviews.length === 0 ? (
-        <p className="rounded-2xl bg-white p-10 text-center text-neutral-600">
+        <p className="rounded-2xl bg-surface p-10 text-center text-muted">
           Tidak ada pembayaran yang menunggu verifikasi.
         </p>
       ) : (
@@ -65,7 +65,7 @@ export default async function PaymentQueuePage({
             <PaymentReviewCard key={review.paymentId} review={review} />
           ))}
           {reviews.length >= QUEUE_LIMIT ? (
-            <p className="text-center text-xs text-neutral-500">
+            <p className="text-center text-xs text-muted">
               Menampilkan {QUEUE_LIMIT} teratas. Selesaikan dulu untuk melihat sisanya.
             </p>
           ) : null}

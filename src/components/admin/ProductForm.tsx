@@ -77,9 +77,9 @@ export function ProductForm({ product }: { product: AdminProduct | null }) {
             setSlug(event.target.value);
             setSlugTouched(true);
           }}
-          className={`${inputClass} ${isEdit ? 'bg-neutral-100 text-neutral-500' : ''}`}
+          className={`${inputClass} ${isEdit ? 'bg-soft text-muted' : ''}`}
         />
-        <span className="mt-1 block text-xs font-normal text-neutral-500">
+        <span className="mt-1 block text-xs font-normal text-muted">
           {isEdit
             ? 'Slug terkunci setelah produk dibuat agar tautan lama tidak putus.'
             : 'Dibuat otomatis dari nama. Huruf kecil, angka, dan tanda hubung.'}
@@ -132,8 +132,8 @@ export function ProductForm({ product }: { product: AdminProduct | null }) {
       </div>
 
       {productType === 'reseller' ? (
-        <fieldset className="grid gap-4 rounded-xl bg-neutral-50 p-4 sm:grid-cols-2">
-          <legend className="px-1 text-xs font-semibold text-neutral-500">
+        <fieldset className="grid gap-4 rounded-xl bg-soft p-4 sm:grid-cols-2">
+          <legend className="px-1 text-xs font-semibold text-muted">
             Data internal reseller (tidak tampil ke pembeli)
           </legend>
           <label className={labelClass}>
@@ -197,7 +197,7 @@ export function ProductForm({ product }: { product: AdminProduct | null }) {
       </label>
 
       {state.status === 'error' ? (
-        <p className="text-sm text-[#FF6B00]" role="alert">
+        <p className="text-sm text-accent-ink" role="alert">
           {state.message}
         </p>
       ) : null}

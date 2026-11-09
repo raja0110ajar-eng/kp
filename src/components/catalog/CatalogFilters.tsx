@@ -33,11 +33,11 @@ export function CatalogFilters({ type, query }: CatalogFiltersProps) {
           maxLength={60}
           placeholder="Cari produk…"
           aria-label="Cari produk"
-          className="w-full rounded-lg border border-neutral-300 px-3 py-2 outline-none focus:border-[#0066FF]"
+          className="w-full rounded-lg border border-line-strong px-3 py-2 focus:border-primary"
         />
         <button
           type="submit"
-          className="inline-flex items-center gap-2 rounded-lg bg-[#0066FF] px-4 py-2 font-semibold text-white transition hover:bg-[#1A73E8]"
+          className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 font-semibold text-white transition hover:bg-primary-hover"
         >
           <Search className="h-4 w-4" aria-hidden />
           Cari
@@ -54,8 +54,8 @@ export function CatalogFilters({ type, query }: CatalogFiltersProps) {
               aria-current={active ? 'page' : undefined}
               className={`rounded-full border px-4 py-1.5 text-sm font-semibold transition ${
                 active
-                  ? 'border-[#0066FF] bg-[#0066FF] text-white'
-                  : 'border-neutral-300 hover:border-neutral-500'
+                  ? 'border-primary bg-primary text-white'
+                  : 'border-line-strong hover:border-muted'
               }`}
             >
               {tab.label}

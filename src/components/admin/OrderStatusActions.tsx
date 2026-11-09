@@ -23,7 +23,7 @@ export function OrderStatusActions({ orderId, status }: OrderStatusActionsProps)
   const [pending, startTransition] = useTransition();
 
   if (status === 'completed' || status === 'cancelled') {
-    return <p className="text-sm text-neutral-600">Status akhir, tidak bisa diubah lagi.</p>;
+    return <p className="text-sm text-muted">Status akhir, tidak bisa diubah lagi.</p>;
   }
 
   const nextStep = NEXT_STEP[status];
@@ -45,7 +45,7 @@ export function OrderStatusActions({ orderId, status }: OrderStatusActionsProps)
   return (
     <div className="space-y-3">
       {!nextStep ? (
-        <p className="text-sm text-neutral-600">
+        <p className="text-sm text-muted">
           Verifikasi pembayaran dulu di antrean verifikasi sebelum pesanan bisa diantar.
         </p>
       ) : null}
@@ -75,7 +75,7 @@ export function OrderStatusActions({ orderId, status }: OrderStatusActionsProps)
       </div>
 
       {confirmCancel ? (
-        <div className="space-y-3 rounded-xl border border-[#FF6B00] bg-[#FF6B00]/5 p-4">
+        <div className="space-y-3 rounded-xl border border-accent bg-accent/5 p-4">
           <p className="text-sm">
             Yakin membatalkan pesanan ini? Jika pembayarannya sudah terverifikasi, stok produk
             dikembalikan otomatis. Pembatalan tidak bisa diurungkan.
@@ -102,9 +102,9 @@ export function OrderStatusActions({ orderId, status }: OrderStatusActionsProps)
         </div>
       ) : null}
 
-      {message ? <p className="text-sm font-semibold text-emerald-700">{message}</p> : null}
+      {message ? <p className="text-sm font-semibold text-success-ink">{message}</p> : null}
       {error ? (
-        <p className="flex items-start gap-2 text-sm text-[#FF6B00]" role="alert">
+        <p className="flex items-start gap-2 text-sm text-accent-ink" role="alert">
           <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden /> {error}
         </p>
       ) : null}

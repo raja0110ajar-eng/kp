@@ -33,7 +33,7 @@ export function Pagination({ basePath, params, page, pageSize, total }: Paginati
       ) : (
         <span />
       )}
-      <span className="text-sm text-neutral-600">
+      <span className="text-sm text-muted">
         Halaman {page} dari {pageCount}
       </span>
       {page < pageCount ? (

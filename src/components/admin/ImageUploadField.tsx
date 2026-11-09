@@ -57,12 +57,12 @@ export function ImageUploadField({
       <input type="hidden" name={name} value={path ?? ''} />
 
       {path ? (
-        <div className="w-40 overflow-hidden rounded-lg border border-neutral-200 bg-neutral-50">
+        <div className="w-40 overflow-hidden rounded-lg border border-line bg-soft">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={getPublicAssetUrl(path)} alt={label} className="h-auto w-full" />
         </div>
       ) : (
-        <p className="text-sm text-neutral-500">Belum ada gambar.</p>
+        <p className="text-sm text-muted">Belum ada gambar.</p>
       )}
 
       <div className="flex flex-wrap items-center gap-2">
@@ -89,9 +89,9 @@ export function ImageUploadField({
         ) : null}
       </div>
 
-      {hint ? <p className="text-xs text-neutral-500">{hint}</p> : null}
+      {hint ? <p className="text-xs text-muted">{hint}</p> : null}
       {error ? (
-        <p className="text-sm text-[#FF6B00]" role="alert">
+        <p className="text-sm text-accent-ink" role="alert">
           {error}
         </p>
       ) : null}

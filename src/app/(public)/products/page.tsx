@@ -25,13 +25,13 @@ export default async function ProductsPage({
     <main className="mx-auto max-w-6xl space-y-6 px-4 py-8">
       <header>
         <h1 className="text-3xl font-extrabold tracking-tight">Katalog</h1>
-        <p className="text-neutral-600">Karya kelompok kami dan produk reseller mitra.</p>
+        <p className="text-muted">Karya kelompok kami dan produk reseller mitra.</p>
       </header>
 
       <CatalogFilters type={type} query={query} />
 
       {products.length === 0 ? (
-        <p className="rounded-xl bg-neutral-50 p-8 text-center text-neutral-600">
+        <p className="rounded-xl bg-soft p-8 text-center text-muted">
           Tidak ada produk yang cocok dengan pencarianmu.
         </p>
       ) : (

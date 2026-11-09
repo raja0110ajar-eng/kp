@@ -16,7 +16,7 @@ export default async function AdminProductsPage() {
       <header className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-extrabold tracking-tight">Produk</h1>
-          <p className="text-sm text-neutral-600">
+          <p className="text-sm text-muted">
             {products.length} produk. Produk tidak dihapus permanen, hanya dinonaktifkan.
           </p>
         </div>
@@ -27,11 +27,11 @@ export default async function AdminProductsPage() {
       </header>
 
       {products.length === 0 ? (
-        <p className="rounded-2xl bg-white p-10 text-center text-neutral-600">Belum ada produk.</p>
+        <p className="rounded-2xl bg-surface p-10 text-center text-muted">Belum ada produk.</p>
       ) : (
-        <div className="overflow-x-auto rounded-2xl border border-neutral-200 bg-white">
+        <div className="overflow-x-auto rounded-2xl border border-line bg-surface">
           <table className="w-full min-w-[820px] text-left text-sm">
-            <thead className="border-b border-neutral-200 bg-neutral-50 text-xs uppercase text-neutral-500">
+            <thead className="border-b border-line bg-soft text-xs uppercase text-muted">
               <tr>
                 <th className="px-4 py-3">Produk</th>
                 <th className="px-4 py-3">Tipe</th>
@@ -43,10 +43,10 @@ export default async function AdminProductsPage() {
             </thead>
             <tbody>
               {products.map((product) => (
-                <tr key={product.id} className="border-b border-neutral-100 last:border-0">
+                <tr key={product.id} className="border-b border-line last:border-0">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-neutral-100 text-neutral-400">
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-soft text-muted">
                         {product.imagePath ? (
                           // eslint-disable-next-line @next/next/no-img-element
                           <img
@@ -61,18 +61,18 @@ export default async function AdminProductsPage() {
                       <div>
                         <Link
                           href={`/admin/products/${product.id}/edit`}
-                          className="font-semibold text-[#0066FF] hover:underline"
+                          className="font-semibold text-link hover:underline"
                         >
                           {product.name}
                         </Link>
-                        <p className="text-xs text-neutral-500">/{product.slug}</p>
+                        <p className="text-xs text-muted">/{product.slug}</p>
                       </div>
                     </div>
                   </td>
                   <td className="px-4 py-3">
                     <p>{PRODUCT_TYPE_LABEL[product.productType]}</p>
                     {product.productType === 'reseller' ? (
-                      <p className="text-xs text-neutral-500">
+                      <p className="text-xs text-muted">
                         {product.resellerName ?? 'Reseller belum diisi'}
                         {product.costPrice !== null ? ` · modal ${formatRupiah(product.costPrice)}` : ''}
                       </p>
@@ -82,7 +82,7 @@ export default async function AdminProductsPage() {
                   <td className="px-4 py-3">
                     <span
                       className={
-                        product.stock <= 5 ? 'font-bold text-[#FF6B00]' : 'font-semibold text-neutral-800'
+                        product.stock <= 5 ? 'font-bold text-accent-ink' : 'font-semibold text-ink'
                       }
                     >
                       {product.stock}

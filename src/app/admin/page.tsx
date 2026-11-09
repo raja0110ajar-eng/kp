@@ -54,15 +54,15 @@ export default async function AdminHomePage() {
               key={card.label}
               href={card.href}
               className={`${cardClass} transition hover:shadow-md ${
-                card.highlight ? 'border-[#FF6B00]' : ''
+                card.highlight ? 'border-accent' : ''
               }`}
             >
               <Icon
-                className={`h-5 w-5 ${card.highlight ? 'text-[#FF6B00]' : 'text-[#0066FF]'}`}
+                className={`h-5 w-5 ${card.highlight ? 'text-accent-ink' : 'text-link'}`}
                 aria-hidden
               />
               <p className="mt-3 text-3xl font-extrabold">{card.value}</p>
-              <p className="text-sm text-neutral-600">{card.label}</p>
+              <p className="text-sm text-muted">{card.label}</p>
             </Link>
           );
         })}
@@ -72,15 +72,15 @@ export default async function AdminHomePage() {
         <h2 className="text-lg font-bold">Penjualan terverifikasi</h2>
         <div className="mt-3 grid gap-4 sm:grid-cols-2">
           <div>
-            <p className="text-3xl font-extrabold text-[#0066FF]">{summary.verifiedOrders}</p>
-            <p className="text-sm text-neutral-600">Pesanan terverifikasi (tidak dibatalkan)</p>
+            <p className="text-3xl font-extrabold text-link">{summary.verifiedOrders}</p>
+            <p className="text-sm text-muted">Pesanan terverifikasi (tidak dibatalkan)</p>
           </div>
           <div>
-            <p className="text-3xl font-extrabold text-[#0066FF]">{formatRupiah(summary.revenue)}</p>
-            <p className="text-sm text-neutral-600">Omzet (total pesanan, belum dikurangi modal)</p>
+            <p className="text-3xl font-extrabold text-link">{formatRupiah(summary.revenue)}</p>
+            <p className="text-sm text-muted">Omzet (total pesanan, belum dikurangi modal)</p>
           </div>
         </div>
-        <p className="mt-4 flex items-start gap-2 text-xs text-neutral-500">
+        <p className="mt-4 flex items-start gap-2 text-xs text-muted">
           <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden />
           Untuk COD, pesanan dihitung saat admin mengonfirmasinya, belum tentu uang tunai sudah diterima.
         </p>

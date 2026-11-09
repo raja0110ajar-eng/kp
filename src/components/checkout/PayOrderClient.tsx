@@ -79,7 +79,7 @@ export function PayOrderClient({ orderCode, paymentSettings }: PayOrderClientPro
 
   if (view.kind === 'loading') {
     return (
-      <p className="flex items-center gap-2 text-neutral-600">
+      <p className="flex items-center gap-2 text-muted">
         <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> Memuat pesanan…
       </p>
     );
@@ -89,7 +89,7 @@ export function PayOrderClient({ orderCode, paymentSettings }: PayOrderClientPro
     return (
       <form onSubmit={handlePhoneSubmit} className="space-y-4">
         <h1 className="text-2xl font-bold">Pesanan {orderCode.toUpperCase()}</h1>
-        <p className="text-sm text-neutral-600">Masukkan nomor HP yang kamu pakai saat checkout.</p>
+        <p className="text-sm text-muted">Masukkan nomor HP yang kamu pakai saat checkout.</p>
         <input
           type="tel"
           required
@@ -98,13 +98,13 @@ export function PayOrderClient({ orderCode, paymentSettings }: PayOrderClientPro
           aria-label="Nomor HP"
           value={phoneInput}
           onChange={(event) => setPhoneInput(event.target.value)}
-          className="w-full rounded-lg border border-neutral-300 px-3 py-2 outline-none focus:border-[#0066FF]"
+          className="w-full rounded-lg border border-line-strong px-3 py-2 focus:border-primary"
         />
-        {view.error ? <p className="text-sm text-[#FF6B00]">{view.error}</p> : null}
+        {view.error ? <p className="text-sm text-accent-ink">{view.error}</p> : null}
         <button
           type="submit"
           disabled={submitting}
-          className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#0066FF] px-4 py-2 font-semibold text-white transition hover:bg-[#1A73E8] disabled:opacity-60"
+          className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2 font-semibold text-white transition hover:bg-primary-hover disabled:opacity-60"
         >
           {submitting ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : null}
           Lanjutkan
@@ -121,33 +121,33 @@ export function PayOrderClient({ orderCode, paymentSettings }: PayOrderClientPro
     <div className="space-y-5">
       <header>
         <h1 className="text-2xl font-bold">Pesanan {order.order_code}</h1>
-        <p className="text-sm text-neutral-600">
+        <p className="text-sm text-muted">
           {METHOD_LABEL[payment.method]} · Total {formatRupiah(order.total)} ·{' '}
           {VERIFICATION_LABEL[payment.verification_status]}
         </p>
       </header>
 
       {payment.verification_status === 'rejected' && payment.admin_note ? (
-        <p className="rounded-lg bg-neutral-50 p-3 text-sm text-[#FF6B00]">
+        <p className="rounded-lg bg-soft p-3 text-sm text-accent-ink">
           Catatan admin: {payment.admin_note}
         </p>
       ) : null}
 
       {order.status === 'cancelled' ? (
-        <p className="text-neutral-700">Pesanan ini sudah dibatalkan.</p>
+        <p className="text-ink-soft">Pesanan ini sudah dibatalkan.</p>
       ) : payment.method === 'cod' ? (
-        <p className="text-neutral-700">
+        <p className="text-ink-soft">
           Pesanan COD tidak perlu bukti transfer. Siapkan uang tunai saat pesanan diantar, admin akan
           mengonfirmasi pesananmu.
         </p>
       ) : payment.verification_status === 'verified' ? (
-        <p className="text-neutral-700">Pembayaran sudah terverifikasi. Pesananmu sedang diproses.</p>
+        <p className="text-ink-soft">Pembayaran sudah terverifikasi. Pesananmu sedang diproses.</p>
       ) : (
         <>
           {destination ? (
             <PaymentDestination setting={destination} />
           ) : (
-            <p className="rounded-lg bg-neutral-50 p-3 text-sm text-[#FF6B00]">
+            <p className="rounded-lg bg-soft p-3 text-sm text-accent-ink">
               Tujuan pembayaran untuk metode ini belum bisa ditampilkan. Hubungi admin Karsa Pandiga
               dengan menyebutkan kode pesananmu.
             </p>
