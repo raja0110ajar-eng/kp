@@ -1,26 +1,183 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+  Warna diturunkan dari logo: navy #123454 dan terracotta #BF5E3F (diukur dari piksel logo).
+  Terracotta untuk tombol/teks sedikit digelapkan (#A94D2F) agar kontrasnya lolos WCAG AA.
+  Untuk mengubah warna situs, cukup edit nilai di blok :root dan .dark di bawah.
+*/
+:root,
+.admin-light {
+  color-scheme: light;
+  --canvas: #ffffff;
+  --surface: #ffffff;
+  --soft: #f3f6fa;
+  --sunken: #e6ebf1;
+  --line: #dce3eb;
+  --line-strong: #8895a5;
+  --ink: #0d0d0d;
+  --ink-soft: #333b46;
+  --muted: #5b6573;
+  --primary: #123454;
+  --primary-hover: #0b2640;
+  --link: #123454;
+  --accent: #a94d2f;
+  --accent-ink: #a94d2f;
+  --inverse: #123454;
+  --inverse-accent: #f3b49c;
+  --danger-soft: #fdecea;
+  --danger-ink: #b42318;
+  --danger-line: #f5c2bd;
+  --success-soft: #e2f5ea;
+  --success-ink: #087443;
+  --focus: #123454;
+}
+
+.dark {
+  color-scheme: dark;
+  --canvas: #0d0d0d;
+  --surface: #151515;
+  --soft: #1a1a1a;
+  --sunken: #262626;
+  --line: #2a2a2a;
+  --line-strong: #6b6b6b;
+  --ink: #ededed;
+  --ink-soft: #cfcfcf;
+  --muted: #a3a3a3;
+  --primary: #3a6aa0;
+  --primary-hover: #2e5683;
+  --link: #7fb2e5;
+  --accent: #a94d2f;
+  --accent-ink: #e07a5a;
+  --inverse: #171717;
+  --inverse-accent: #f3b49c;
+  --danger-soft: #3a1717;
+  --danger-ink: #ff9c94;
+  --danger-line: #5b2626;
+  --success-soft: #12301f;
+  --success-ink: #7ed9a0;
+  --focus: #7fb2e5;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-soft: var(--soft);
+  --color-sunken: var(--sunken);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-muted: var(--muted);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-link: var(--link);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-inverse: var(--inverse);
+  --color-inverse-accent: var(--inverse-accent);
+  --color-danger-soft: var(--danger-soft);
+  --color-danger-ink: var(--danger-ink);
+  --color-danger-line: var(--danger-line);
+  --color-success-soft: var(--success-soft);
+  --color-success-ink: var(--success-ink);
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background: var(--canvas);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: #ffffff;
+  }
+
+  /* Efek tekan pada tombol: instan dan halus. Dimatikan bila pengguna meminta kurangi gerakan. */
+  @media (prefers-reduced-motion: no-preference) {
+    button:not(:disabled):active,
+    [role="button"]:active {
+      scale: 0.97;
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Blok bernuansa gelap (navy di tema terang): cincin fokus harus terang agar terlihat. */
+.on-inverse {
+  --focus: var(--inverse-accent);
+}
+
+/* Tautan "Lompat ke konten" untuk pengguna keyboard dan pembaca layar. */
+.skip-link {
+  position: fixed;
+  left: 1rem;
+  top: 1rem;
+  z-index: 100;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  background: var(--primary);
+  color: #ffffff;
+  font-weight: 600;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* Satu momen animasi terencana: konten hero naik berurutan saat halaman dibuka (tanpa JavaScript). */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rise {
+  animation: rise 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.page-enter {
+  animation: page-enter 280ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise,
+  .page-enter {
+    animation: none;
+  }
 }
