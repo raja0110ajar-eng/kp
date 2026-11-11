@@ -4,10 +4,13 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   BadgeCheck,
+  FileText,
   LayoutDashboard,
   LogOut,
   Package,
   ReceiptText,
+  Star,
+  Tags,
   Truck,
   Wallet,
 } from 'lucide-react';
@@ -18,6 +21,9 @@ const ITEMS = [
   { href: '/admin/payments', label: 'Verifikasi', icon: BadgeCheck, exact: false },
   { href: '/admin/orders', label: 'Pesanan', icon: ReceiptText, exact: false },
   { href: '/admin/products', label: 'Produk', icon: Package, exact: false },
+  { href: '/admin/categories', label: 'Kategori', icon: Tags, exact: false },
+  { href: '/admin/reviews', label: 'Ulasan', icon: Star, exact: false },
+  { href: '/admin/reports', label: 'Laporan', icon: FileText, exact: false },
   { href: '/admin/shipping', label: 'Tarif kurir', icon: Truck, exact: false },
   { href: '/admin/payment-settings', label: 'Setelan bayar', icon: Wallet, exact: false },
 ] as const;
@@ -34,7 +40,7 @@ export function AdminNav() {
   }
 
   return (
-    <aside className="border-b border-line bg-surface md:sticky md:top-0 md:h-screen md:w-60 md:shrink-0 md:border-b-0 md:border-r">
+    <aside className="border-b border-line bg-surface md:sticky md:top-0 md:h-screen md:w-60 md:shrink-0 md:overflow-y-auto md:border-b-0 md:border-r">
       <div className="flex items-center justify-between px-4 py-3 md:block md:py-5">
         <Link href="/admin" className="text-lg font-extrabold tracking-tight text-link">
           Karsa Pandiga
@@ -65,7 +71,7 @@ export function AdminNav() {
         })}
       </nav>
 
-      <div className="hidden px-2 pt-4 md:block">
+      <div className="hidden px-2 pb-4 pt-4 md:block">
         <button
           type="button"
           onClick={handleSignOut}

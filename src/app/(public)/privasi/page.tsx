@@ -22,6 +22,7 @@ const SECTIONS: readonly PolicySection[] = [
       'Saat membayar non-tunai: gambar bukti transfer yang kamu unggah.',
       'Jika kamu membuat akun: alamat email dan kata sandi. Kata sandi disimpan dalam bentuk acak (hash) oleh layanan autentikasi, sehingga kami tidak bisa membacanya.',
       'Data teknis: alamat IP, dipakai hanya untuk membatasi percobaan berlebihan saat melacak atau membuat pesanan. Disimpan paling lama sekitar satu hari.',
+      'Jika kamu menulis ulasan: rating dan tulisanmu, beserta nama depanmu yang diambil dari pesanan. Ulasan baru tampil publik setelah disetujui admin.',
     ],
   },
   {
@@ -36,6 +37,7 @@ const SECTIONS: readonly PolicySection[] = [
       'Admin Karsa Pandiga, yaitu anggota kelompok yang diberi akses.',
       'Penyedia layanan yang memproses data atas nama kami: Supabase (database, penyimpanan file, dan autentikasi) serta Vercel (hosting).',
       'Bukti transfer disimpan secara privat dan hanya bisa dibuka admin.',
+      'Pengunjung situs, hanya untuk ulasan yang sudah disetujui admin (nama depan, rating, dan tulisan).',
     ],
   },
   {

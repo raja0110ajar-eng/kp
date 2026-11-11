@@ -294,6 +294,8 @@ export async function getAdminOrderDetail(orderId: string): Promise<AdminOrderDe
 interface RawProductCost {
   reseller_name: string | null;
   cost_price: number | null;
+  packaging_cost: number;
+  labor_minutes: number;
 }
 
 interface RawAdminProduct {
@@ -306,11 +308,17 @@ interface RawAdminProduct {
   image_path: string | null;
   product_type: ProductType;
   is_active: boolean;
+  category_id: string | null;
+  gallery_paths: string[] | null;
+  materials: string | null;
+  dimensions: string | null;
+  weight_grams: number | null;
+  lead_time_days: number;
   product_costs: RawProductCost | RawProductCost[] | null;
 }
 
 const ADMIN_PRODUCT_COLUMNS =
-  'id, slug, name, description, price, stock, image_path, product_type, is_active, product_costs(reseller_name, cost_price)';
+  'id, slug, name, description, price, stock, image_path, product_type, is_active, category_id, gallery_paths, materials, dimensions, weight_grams, lead_time_days, product_costs(reseller_name, cost_price, packaging_cost, labor_minutes)';
 
 function mapAdminProduct(row: RawAdminProduct): AdminProduct {
   const cost = firstOf(row.product_costs);
@@ -326,6 +334,14 @@ function mapAdminProduct(row: RawAdminProduct): AdminProduct {
     isActive: row.is_active,
     resellerName: cost?.reseller_name ?? null,
     costPrice: cost?.cost_price ?? null,
+    categoryId: row.category_id,
+    galleryPaths: row.gallery_paths ?? [],
+    materials: row.materials,
+    dimensions: row.dimensions,
+    weightGrams: row.weight_grams,
+    leadTimeDays: row.lead_time_days,
+    packagingCost: cost?.packaging_cost ?? 0,
+    laborMinutes: cost?.labor_minutes ?? 0,
   };
 }
 

@@ -97,6 +97,33 @@ export interface AdminProduct {
   isActive: boolean;
   resellerName: string | null;
   costPrice: number | null;
+  categoryId: string | null;
+  galleryPaths: string[];
+  materials: string | null;
+  dimensions: string | null;
+  weightGrams: number | null;
+  leadTimeDays: number;
+  packagingCost: number;
+  laborMinutes: number;
+}
+
+export interface AdminCategory {
+  id: string;
+  slug: string;
+  name: string;
+  sortOrder: number;
+  isActive: boolean;
+}
+
+export interface AdminReview {
+  id: string;
+  rating: number;
+  body: string;
+  displayName: string;
+  status: 'pending' | 'approved' | 'rejected';
+  isFeatured: boolean;
+  createdAt: string;
+  productName: string;
 }
 
 export interface AdminShippingZone {

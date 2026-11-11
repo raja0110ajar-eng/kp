@@ -9,6 +9,20 @@ export interface ProductSummary {
   stock: number;
   image_path: string | null;
   product_type: ProductType;
+  category_id: string | null;
+  /** Foto tambahan (maksimal 3), di luar foto utama. */
+  gallery_paths: string[];
+  materials: string | null;
+  dimensions: string | null;
+  weight_grams: number | null;
+  /** 0 berarti siap dikirim. */
+  lead_time_days: number;
+}
+
+export interface Category {
+  id: string;
+  slug: string;
+  name: string;
 }
 
 export interface ShippingZone {

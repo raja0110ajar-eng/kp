@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState, type FormEvent } from 'react';
 import { Loader2, RefreshCw } from 'lucide-react';
 import { OrderStatusView } from '@/components/orders/OrderStatusView';
+import { ReviewSection } from '@/components/orders/ReviewSection';
 import { getOrderErrorMessage } from '@/lib/orders/errors';
 import { recallOrderPhone, rememberOrderPhone } from '@/lib/orders/order-session';
 import { trackOrderDetail } from '@/lib/orders/track-detail';
@@ -128,6 +129,9 @@ export function GuestOrderTracker({ orderCode }: { orderCode: string }) {
         </button>
       </div>
       <OrderStatusView order={view.order} />
+      {view.order.status === 'completed' ? (
+        <ReviewSection orderCode={view.order.order_code} phone={view.phone} />
+      ) : null}
     </div>
   );
 }

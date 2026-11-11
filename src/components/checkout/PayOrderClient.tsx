@@ -10,6 +10,7 @@ import { getOrderErrorMessage } from '@/lib/orders/errors';
 import { recallOrderPhone, rememberOrderPhone } from '@/lib/orders/order-session';
 import type { PaymentSetting } from '@/types/catalog';
 import type { PaymentMethod, TrackedOrder, VerificationStatus } from '@/types/domain';
+import { PaymentNextSteps } from '@/components/checkout/PaymentNextSteps';
 
 type ViewState =
   | { kind: 'loading' }

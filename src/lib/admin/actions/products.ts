@@ -6,7 +6,8 @@ import { requireAdmin } from '@/lib/auth/require-admin';
 import { createClient } from '@/lib/supabase/server';
 import type { ActionResult, FormState } from '@/lib/admin/action-result';
 import { getAdminErrorMessage } from '@/lib/admin/errors';
-import { UUID_REGEX, parseProductForm } from '@/lib/admin/validation';
+import { parseProductForm } from '@/lib/admin/product-input';
+import { UUID_REGEX } from '@/lib/admin/validation';
 
 const ASSET_BUCKET = 'public-assets';
 
@@ -21,23 +22,30 @@ export async function saveProductAction(
   const input = parsed.value;
 
   const supabase = await createClient();
-  let productId: string;
-  let previousImagePath: string | null = null;
   const isCreate = input.id === null;
+  let productId: string;
+  let previousPaths: string[] = [];
+
+  const sharedFields = {
+    name: input.name,
+    description: input.description,
+    price: input.price,
+    stock: input.stock,
+    product_type: input.productType,
+    category_id: input.categoryId,
+    is_active: input.isActive,
+    image_path: input.imagePath,
+    gallery_paths: input.galleryPaths,
+    materials: input.materials,
+    dimensions: input.dimensions,
+    weight_grams: input.weightGrams,
+    lead_time_days: input.leadTimeDays,
+  };
 
   if (input.id === null) {
     const { data, error } = await supabase
       .from('products')
-      .insert({
-        slug: input.slug,
-        name: input.name,
-        description: input.description,
-        price: input.price,
-        stock: input.stock,
-        product_type: input.productType,
-        is_active: input.isActive,
-        image_path: input.imagePath,
-      })
+      .insert({ slug: input.slug, ...sharedFields })
       .select('id')
       .single();
     if (error || !data) {
@@ -47,49 +55,54 @@ export async function saveProductAction(
   } else {
     const { data: current, error: readError } = await supabase
       .from('products')
-      .select('image_path')
+      .select('image_path, gallery_paths')
       .eq('id', input.id)
       .maybeSingle();
     if (readError) return { status: 'error', message: getAdminErrorMessage(readError.message) };
     if (!current) return { status: 'error', message: 'Produk tidak ditemukan.' };
-    previousImagePath = (current as { image_path: string | null }).image_path;
 
-    const { error } = await supabase
-      .from('products')
-      .update({
-        name: input.name,
-        description: input.description,
-        price: input.price,
-        stock: input.stock,
-        product_type: input.productType,
-        is_active: input.isActive,
-        image_path: input.imagePath,
-      })
-      .eq('id', input.id);
+    const row = current as { image_path: string | null; gallery_paths: string[] | null };
+    previousPaths = [...(row.image_path ? [row.image_path] : []), ...(row.gallery_paths ?? [])];
+
+    const { error } = await supabase.from('products').update(sharedFields).eq('id', input.id);
     if (error) return { status: 'error', message: getAdminErrorMessage(error.message) };
     productId = input.id;
   }
 
-  if (input.productType === 'reseller') {
-    const { error } = await supabase
-      .from('product_costs')
-      .upsert(
-        { product_id: productId, reseller_name: input.resellerName, cost_price: input.costPrice },
-        { onConflict: 'product_id' }
-      );
+  const hasCost =
+    input.costPrice !== null ||
+    input.resellerName !== null ||
+    input.packagingCost > 0 ||
+    input.laborMinutes > 0;
+
+  if (hasCost) {
+    const { error } = await supabase.from('product_costs').upsert(
+      {
+        product_id: productId,
+        reseller_name: input.resellerName,
+        cost_price: input.costPrice,
+        packaging_cost: input.packagingCost,
+        labor_minutes: input.laborMinutes,
+      },
+      { onConflict: 'product_id' }
+    );
     if (error) {
       // Saat membuat produk baru, batalkan produk yang baru dibuat agar tidak setengah jadi.
       if (isCreate) await supabase.from('products').delete().eq('id', productId);
       return {
         status: 'error',
-        message: `Data reseller gagal disimpan: ${getAdminErrorMessage(error.message)}`,
+        message: `Data biaya gagal disimpan: ${getAdminErrorMessage(error.message)}`,
       };
     }
+  } else if (!isCreate) {
+    await supabase.from('product_costs').delete().eq('product_id', productId);
   }
 
-  // Hapus file gambar lama bila diganti/dihapus (upaya terbaik, kegagalannya tidak menghentikan simpan).
-  if (previousImagePath && previousImagePath !== input.imagePath) {
-    await supabase.storage.from(ASSET_BUCKET).remove([previousImagePath]);
+  // Hapus file gambar lama yang tidak dipakai lagi (upaya terbaik).
+  const keptPaths = new Set([...(input.imagePath ? [input.imagePath] : []), ...input.galleryPaths]);
+  const removable = previousPaths.filter((path) => !keptPaths.has(path));
+  if (removable.length > 0) {
+    await supabase.storage.from(ASSET_BUCKET).remove(removable);
   }
 
   revalidatePath('/admin', 'layout');

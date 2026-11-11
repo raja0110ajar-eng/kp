@@ -77,6 +77,20 @@ berlaku di checkout. Metode pembayaran tidak bisa diaktifkan sebelum nomor atau 
 - **Salah verifikasi:** batalkan pesanannya (stok otomatis kembali), lalu minta pembeli memesan ulang.
 - **COD:** konfirmasi di antrean (tab COD). Stok berkurang saat dikonfirmasi, bukan saat uang diterima.
 
+## 6a. Ulasan pembeli
+
+Ulasan hanya bisa ditulis pembeli yang pesanannya berstatus Selesai. Buka **Dashboard admin → Ulasan**:
+setujui yang wajar, tolak yang kasar atau tidak relevan, dan sorot ulasan terbaik agar tampil di beranda.
+Nama yang tampil adalah nama depan pembeli, diambil otomatis dari pesanan.
+
+## 6b. Laporan dan biaya
+
+Buka **Dashboard admin → Laporan**. HPP tersimpan di setiap item pesanan saat pembayaran diverifikasi.
+Mengubah biaya produk atau tarif tenaga tidak mengubah laba pesanan lama. Isi **Asumsi biaya** (tarif tenaga
+dan biaya antar) di bagian bawah halaman Laporan. Ekspor CSV tidak memuat data pribadi pembeli.
+Bila Excel menampilkan semua kolom dalam satu kolom, buka lewat Data, Dari Teks/CSV, lalu pilih pemisah
+titik koma.
+
 ## 7. Pelacakan pembeli terkunci
 
 Pembeli yang salah memasukkan nomor HP lima kali terkunci 15 menit. Untuk membukanya, jalankan di

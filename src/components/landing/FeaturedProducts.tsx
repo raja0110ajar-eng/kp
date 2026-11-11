@@ -1,15 +1,13 @@
 import Link from 'next/link';
 import { ProductCard } from '@/components/catalog/ProductCard';
-import { getFeaturedProducts } from '@/lib/catalog/featured';
+import type { ProductSummary } from '@/types/catalog';
 
-export async function FeaturedProducts() {
-  const products = await getFeaturedProducts(4);
-
+export function FeaturedProducts({ products }: { products: ProductSummary[] }) {
   return (
     <section id="produk" className="py-16 sm:py-20">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="flex flex-wrap items-end justify-between gap-3">
-          <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">Karya terbaru dari kami</h2>
+          <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl">Karya unggulan</h2>
           <Link href="/products" className="text-sm font-semibold text-link underline-offset-4 hover:underline">
             Lihat semua produk
           </Link>

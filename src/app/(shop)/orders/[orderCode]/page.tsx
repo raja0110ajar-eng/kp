@@ -5,6 +5,7 @@ import { ArrowLeft } from 'lucide-react';
 import { AutoRefresh } from '@/components/admin/AutoRefresh';
 import { GuestOrderTracker } from '@/components/orders/GuestOrderTracker';
 import { OrderStatusView } from '@/components/orders/OrderStatusView';
+import { ReviewSection } from '@/components/orders/ReviewSection';
 import { ORDER_CODE_REGEX, normalizeOrderCode } from '@/lib/orders/order-code';
 import { getCurrentUserId, getMyOrderByCode } from '@/lib/orders/my-orders';
 
@@ -43,6 +44,9 @@ export default async function OrderTrackingPage({
             <AutoRefresh />
           </div>
           <OrderStatusView order={owned} />
+          {owned.status === 'completed' ? (
+            <ReviewSection orderCode={owned.order_code} phone="" />
+          ) : null}
         </div>
       ) : (
         <GuestOrderTracker orderCode={orderCode} />

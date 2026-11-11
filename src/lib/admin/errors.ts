@@ -10,6 +10,9 @@ const ERROR_MESSAGES: ReadonlyArray<readonly [string, string]> = [
   ['note_required', 'Catatan penolakan wajib diisi.'],
   ['products_slug_key', 'Slug sudah dipakai produk lain. Ganti slug-nya.'],
   ['shipping_zones_name_key', 'Nama zona sudah ada. Gunakan nama lain.'],
+  ['categories_slug_key', 'Nama kategori ini terlalu mirip dengan kategori lain. Ubah sedikit namanya.'],
+  ['categories_name_key', 'Nama kategori sudah dipakai.'],
+  ['reviews_featured_approved_chk', 'Hanya ulasan yang disetujui yang bisa disorot di beranda.'],
   [
     'payment_settings_complete_when_active',
     'Metode tidak bisa diaktifkan: QRIS wajib punya gambar, metode lain wajib punya nomor rekening/akun.',

@@ -8,7 +8,7 @@ export default async function CheckoutPage() {
   ]);
 
   return (
-    <main className="mx-auto max-w-5xl px-4 py-8">
+    <main className="mx-auto max-w-5xl px-4 pb-32 pt-8 sm:px-6 lg:pb-12">
       <h1 className="mb-6 text-3xl font-extrabold tracking-tight">Checkout</h1>
       <CheckoutForm zones={zones} paymentSettings={paymentSettings} />
     </main>

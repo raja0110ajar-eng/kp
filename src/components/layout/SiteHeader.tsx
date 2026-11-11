@@ -8,8 +8,8 @@ import { BrandLogo } from '@/components/layout/BrandLogo';
 import { ThemeToggle } from '@/components/layout/ThemeToggle';
 
 const NAV = [
-  { href: '/products', label: 'Katalog' },
-  { href: '/orders', label: 'Pesanan' },
+  { href: '/products', short: 'Katalog', long: 'Katalog' },
+  { href: '/orders', short: 'Pesanan', long: 'Lacak pesanan' },
 ] as const;
 
 const SCROLL_THRESHOLD = 8;
@@ -20,7 +20,6 @@ export function SiteHeader() {
   const [hidden, setHidden] = useState(false);
   const lastY = useRef(0);
 
-  // Header menyembunyikan diri saat scroll turun dan muncul lagi saat scroll naik.
   useEffect(() => {
     lastY.current = window.scrollY;
 
@@ -45,10 +44,10 @@ export function SiteHeader() {
         hidden ? '-translate-y-full' : 'translate-y-0'
       }`}
     >
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-4 py-3 sm:px-6">
-        <BrandLogo />
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-4 py-2 sm:px-6">
+        <BrandLogo compact />
 
-        <div className="flex items-center gap-1 sm:gap-2">
+        <div className="flex items-center gap-0.5 sm:gap-2">
           <nav aria-label="Navigasi utama" className="flex items-center">
             {NAV.map((item) => {
               const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
@@ -57,11 +56,12 @@ export function SiteHeader() {
                   key={item.href}
                   href={item.href}
                   aria-current={active ? 'page' : undefined}
-                  className={`relative px-2.5 py-2 text-sm font-semibold after:absolute after:inset-x-2.5 after:bottom-1 after:h-0.5 after:origin-left after:rounded-full after:bg-accent after:transition-transform after:duration-300 motion-reduce:after:transition-none sm:px-3 sm:after:inset-x-3 ${
+                  className={`relative flex min-h-11 items-center px-2.5 text-sm font-semibold after:absolute after:inset-x-2.5 after:bottom-1.5 after:h-0.5 after:origin-left after:rounded-full after:bg-accent after:transition-transform after:duration-300 motion-reduce:after:transition-none sm:px-3 sm:after:inset-x-3 ${
                     active ? 'after:scale-x-100' : 'after:scale-x-0 hover:after:scale-x-100'
                   }`}
                 >
-                  {item.label}
+                  <span className="sm:hidden">{item.short}</span>
+                  <span className="hidden sm:inline">{item.long}</span>
                 </Link>
               );
             })}

@@ -1,12 +1,11 @@
 import { createClient } from '@/lib/supabase/server';
 import { PRODUCT_COLUMNS } from '@/lib/catalog/columns';
-import type { PaymentSetting, ProductSummary, ShippingZone } from '@/types/catalog';
-import type { ProductType } from '@/types/domain';
+import type { Category, PaymentSetting, ProductSummary, ShippingZone } from '@/types/catalog';
 
 const SLUG_REGEX = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 
 export interface ProductFilter {
-  type: ProductType | null;
+  categoryId: string | null;
   query: string;
 }
 
@@ -24,8 +23,8 @@ export async function getActiveProducts(filter: ProductFilter): Promise<ProductS
     .eq('is_active', true)
     .order('created_at', { ascending: false });
 
-  if (filter.type) {
-    request = request.eq('product_type', filter.type);
+  if (filter.categoryId) {
+    request = request.eq('category_id', filter.categoryId);
   }
   const search = sanitizeSearch(filter.query);
   if (search) {
@@ -50,6 +49,44 @@ export async function getProductBySlug(slug: string): Promise<ProductSummary | n
 
   if (error) throw new Error(`Gagal memuat produk: ${error.message}`);
   return (data as unknown as ProductSummary | null) ?? null;
+}
+
+/** Produk lain yang masih tersedia, diprioritaskan dari kategori yang sama. */
+export async function getRelatedProducts(
+  product: ProductSummary,
+  limit: number
+): Promise<ProductSummary[]> {
+  const supabase = await createClient();
+
+  let request = supabase
+    .from('products')
+    .select(PRODUCT_COLUMNS)
+    .eq('is_active', true)
+    .gt('stock', 0)
+    .neq('id', product.id)
+    .order('created_at', { ascending: false })
+    .limit(limit);
+
+  if (product.category_id) {
+    request = request.eq('category_id', product.category_id);
+  }
+
+  const { data, error } = await request;
+  if (error) throw new Error(`Gagal memuat produk terkait: ${error.message}`);
+  return (data ?? []) as unknown as ProductSummary[];
+}
+
+export async function getActiveCategories(): Promise<Category[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from('categories')
+    .select('id, slug, name')
+    .eq('is_active', true)
+    .order('sort_order', { ascending: true })
+    .order('name', { ascending: true });
+
+  if (error) throw new Error(`Gagal memuat kategori: ${error.message}`);
+  return (data ?? []) as unknown as Category[];
 }
 
 export async function getActiveShippingZones(): Promise<ShippingZone[]> {

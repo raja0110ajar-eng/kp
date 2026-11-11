@@ -77,27 +77,51 @@ export function ThemeToggle() {
     listeners.forEach((notify) => notify());
   }
 
+  const currentIndex = Math.max(
+    0,
+    OPTIONS.findIndex((option) => option.value === preference)
+  );
+  const current = OPTIONS[currentIndex];
+  const CurrentIcon = current.icon;
+
   return (
-    <div role="group" aria-label="Pilih tema" className="inline-flex rounded-full border border-line p-0.5">
-      {OPTIONS.map((option) => {
-        const Icon = option.icon;
-        const active = preference === option.value;
-        return (
-          <button
-            key={option.value}
-            type="button"
-            aria-pressed={active}
-            aria-label={option.label}
-            title={option.label}
-            onClick={() => choose(option.value)}
-            className={`flex h-7 w-7 items-center justify-center rounded-full transition-colors ${
-              active ? 'bg-primary text-white' : 'text-muted hover:text-ink'
-            }`}
-          >
-            <Icon className="h-3.5 w-3.5" />
-          </button>
-        );
-      })}
-    </div>
+    <>
+      {/* Layar sempit: satu tombol yang berganti terang, gelap, perangkat. */}
+      <button
+        type="button"
+        onClick={() => choose(OPTIONS[(currentIndex + 1) % OPTIONS.length].value)}
+        aria-label={`${current.label}. Ketuk untuk mengganti tema`}
+        title={current.label}
+        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-line text-muted sm:hidden"
+      >
+        <CurrentIcon className="h-4 w-4" />
+      </button>
+
+      <div
+        role="group"
+        aria-label="Pilih tema"
+        className="hidden rounded-full border border-line p-0.5 sm:inline-flex"
+      >
+        {OPTIONS.map((option) => {
+          const Icon = option.icon;
+          const active = preference === option.value;
+          return (
+            <button
+              key={option.value}
+              type="button"
+              aria-pressed={active}
+              aria-label={option.label}
+              title={option.label}
+              onClick={() => choose(option.value)}
+              className={`flex h-7 w-7 items-center justify-center rounded-full transition-colors ${
+                active ? 'bg-primary text-white' : 'text-muted hover:text-ink'
+              }`}
+            >
+              <Icon className="h-3.5 w-3.5" />
+            </button>
+          );
+        })}
+      </div>
+    </>
   );
 }
