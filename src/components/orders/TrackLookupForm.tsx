@@ -58,7 +58,7 @@ export function TrackLookupForm() {
       className="space-y-4 rounded-2xl border border-line bg-surface p-5"
     >
       <div>
-        <h2 className="text-lg font-bold">Lacak dengan kode pesanan</h2>
+        <h2 className="text-lg font-bold"></h2>
         <p className="text-sm text-muted">
           Kode pesanan ada di halaman setelah checkout. Nomor HP harus sama dengan yang kamu isi saat
           checkout.

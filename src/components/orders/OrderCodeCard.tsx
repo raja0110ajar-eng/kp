@@ -37,7 +37,7 @@ export function OrderCodeCard({ orderCode }: { orderCode: string }) {
     siteConfig.contact.whatsapp !== ''
       ? buildWhatsAppLink(
           siteConfig.contact.whatsapp,
-          `Halo Karsa Pandiga, saya sudah membuat pesanan ${display}. Tautan pesanan: ${getSiteUrl()}/orders/${orderCode}`
+          `Halo Karsa Pandiga, saya sudah membuat pesanan ${display}.`
         )
       : '';
 
