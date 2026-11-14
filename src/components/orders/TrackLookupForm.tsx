@@ -25,7 +25,7 @@ export function TrackLookupForm() {
 
     const orderCode = normalizeOrderCode(code);
     if (!ORDER_CODE_REGEX.test(orderCode)) {
-      setError('Format kode pesanan tidak valid. Contoh: KP-1A2B3C4D5E.');
+      setError('Format kode pesanan tidak valid. Contoh: KP-7K3-M9A.');
       return;
     }
     if (!isValidPhone(phone)) {

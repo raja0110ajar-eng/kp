@@ -1,9 +1,11 @@
 import Link from 'next/link';
 import { Package, Plus } from 'lucide-react';
+import { FeaturedToggle } from '@/components/admin/FeaturedToggle';
 import { ProductActiveToggle } from '@/components/admin/ProductActiveToggle';
 import { StatusBadge } from '@/components/admin/StatusBadge';
 import { primaryButtonClass } from '@/components/admin/styles';
 import { computeUnitCost } from '@/lib/admin/costing';
+import { MAX_FEATURED, getFeaturedFlags } from '@/lib/admin/featured';
 import { getAdminCategories } from '@/lib/admin/extra-queries';
 import { getAdminProducts } from '@/lib/admin/queries';
 import { getBusinessSettings } from '@/lib/admin/reports';
@@ -11,12 +13,14 @@ import { getPublicAssetUrl } from '@/lib/assets';
 import { formatRupiah } from '@/lib/format';
 
 export default async function AdminProductsPage() {
-  const [products, categories, settings] = await Promise.all([
+  const [products, categories, settings, featuredFlags] = await Promise.all([
     getAdminProducts(),
     getAdminCategories(),
     getBusinessSettings(),
+    getFeaturedFlags(),
   ]);
   const categoryName = new Map(categories.map((category) => [category.id, category.name] as const));
+  const featuredCount = Object.values(featuredFlags).filter(Boolean).length;
 
   return (
     <main className="mx-auto max-w-6xl space-y-6">
@@ -24,7 +28,8 @@ export default async function AdminProductsPage() {
         <div>
           <h1 className="text-2xl font-extrabold tracking-tight">Produk</h1>
           <p className="text-sm text-muted">
-            {products.length} produk. Produk tidak dihapus permanen, hanya dinonaktifkan.
+            {products.length} produk. Produk tidak dihapus permanen, hanya dinonaktifkan. Karya unggulan di
+            beranda dipilih manual: {featuredCount} dari maksimal {MAX_FEATURED}.
           </p>
         </div>
         <Link href="/admin/products/new" className={primaryButtonClass}>
@@ -37,7 +42,7 @@ export default async function AdminProductsPage() {
         <p className="rounded-2xl bg-surface p-10 text-center text-muted">Belum ada produk.</p>
       ) : (
         <div className="overflow-x-auto rounded-2xl border border-line bg-surface">
-          <table className="w-full min-w-[900px] text-left text-sm">
+          <table className="w-full min-w-[1000px] text-left text-sm">
             <thead className="border-b border-line bg-soft text-xs uppercase text-muted">
               <tr>
                 <th className="px-4 py-3">Produk</th>
@@ -46,6 +51,7 @@ export default async function AdminProductsPage() {
                 <th className="px-4 py-3">HPP / margin</th>
                 <th className="px-4 py-3">Stok</th>
                 <th className="px-4 py-3">Status</th>
+                <th className="px-4 py-3">Unggulan</th>
                 <th className="px-4 py-3">Aksi</th>
               </tr>
             </thead>
@@ -118,6 +124,13 @@ export default async function AdminProductsPage() {
                       <StatusBadge tone={product.isActive ? 'green' : 'neutral'}>
                         {product.isActive ? 'Aktif' : 'Nonaktif'}
                       </StatusBadge>
+                    </td>
+                    <td className="px-4 py-3">
+                      {product.isActive ? (
+                        <FeaturedToggle productId={product.id} featured={featuredFlags[product.id] === true} />
+                      ) : (
+                        <span className="text-xs text-muted">Aktifkan dulu</span>
+                      )}
                     </td>
                     <td className="px-4 py-3">
                       <ProductActiveToggle productId={product.id} isActive={product.isActive} />

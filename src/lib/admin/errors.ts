@@ -6,6 +6,8 @@ const ERROR_MESSAGES: ReadonlyArray<readonly [string, string]> = [
   ['order_not_found', 'Pesanan tidak ditemukan.'],
   ['order_already_final', 'Pesanan sudah berstatus akhir (selesai/dibatalkan) dan tidak bisa diubah.'],
   ['invalid_transition', 'Perubahan status ini tidak diizinkan dari status pesanan saat ini.'],
+  ['invalid_eta', 'Tanggal perkiraan tidak valid (maksimal 120 hari ke depan, dan tidak boleh lebih dari kemarin).'],
+  ['note_too_long', 'Keterangan terlalu panjang (waktu maksimal 200 karakter, catatan maksimal 300).'],
   ['status_not_allowed', 'Status yang dipilih tidak diizinkan.'],
   ['note_required', 'Catatan penolakan wajib diisi.'],
   ['products_slug_key', 'Slug sudah dipakai produk lain. Ganti slug-nya.'],

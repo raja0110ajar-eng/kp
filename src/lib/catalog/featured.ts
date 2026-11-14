@@ -3,8 +3,8 @@ import { createPublicClient } from '@/lib/supabase/public';
 import type { ProductSummary } from '@/types/catalog';
 
 /**
- * Produk pilihan untuk landing page: aktif dan stok tersedia, "Karya Kami" lebih dulu
- * (urutan enum product_type), lalu yang terbaru. Gagal query tidak boleh merusak landing page.
+ * Karya unggulan di landing page: hanya produk yang ditandai admin, aktif, dan stoknya ada.
+ * Gagal query tidak boleh merusak landing page.
  */
 export async function getFeaturedProducts(limit: number): Promise<ProductSummary[]> {
   try {
@@ -13,18 +13,18 @@ export async function getFeaturedProducts(limit: number): Promise<ProductSummary
       .from('products')
       .select(PRODUCT_COLUMNS)
       .eq('is_active', true)
+      .eq('is_featured', true)
       .gt('stock', 0)
-      .order('product_type', { ascending: true })
       .order('created_at', { ascending: false })
       .limit(limit);
 
     if (error) {
-      console.error('Gagal memuat produk pilihan:', error.message);
+      console.error('Gagal memuat produk unggulan:', error.message);
       return [];
     }
     return (data ?? []) as unknown as ProductSummary[];
   } catch (caught) {
-    console.error('Gagal memuat produk pilihan:', caught);
+    console.error('Gagal memuat produk unggulan:', caught);
     return [];
   }
 }

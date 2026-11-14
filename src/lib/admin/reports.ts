@@ -315,7 +315,10 @@ export async function getSalesReport(range: ReportRange): Promise<SalesReport> {
     (status) => status === 'awaiting_payment' || status === 'awaiting_verification'
   ).length;
   const verifiedProgress = cohort.filter(
-    (status) => status === 'processing' || status === 'delivering' || status === 'completed'
+    (status) => status === 'processing' ||
+      status === 'ready' ||
+      status === 'delivering' ||
+      status === 'completed'
   ).length;
   const cancelled = cohort.filter((status) => status === 'cancelled').length;
 

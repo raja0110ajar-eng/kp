@@ -7,7 +7,7 @@ import type {
   VerificationStatus,
 } from '@/types/domain';
 
-/** Hasil RPC track_order (setelah migrasi 0003) dan hasil query pesanan milik pembeli login. */
+/** Hasil RPC track_order dan query pesanan milik pembeli login. */
 export interface TrackedOrderDetail {
   order_id: string;
   order_code: string;
@@ -22,6 +22,12 @@ export interface TrackedOrderDetail {
   total: number;
   created_at: string;
   updated_at: string;
+  /** Tanggal (YYYY-MM-DD) perkiraan diantar. */
+  eta_date: string | null;
+  eta_note: string | null;
+  customer_note: string | null;
+  /** null bila jadwal masih perkiraan otomatis dan belum pernah diubah admin. */
+  schedule_updated_at: string | null;
   items: TrackedOrderItem[];
   payment: {
     id: string;

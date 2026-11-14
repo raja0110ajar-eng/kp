@@ -92,7 +92,7 @@ export const siteConfig: SiteConfig = {
   about: [
     'Karsa Pandiga adalah wadah kolaborasi kreatif berbasis vokasi dari kompetensi keahlian PPLG SMKN 2 Klaten.',
     'Tidak hanya berfokus pada pengembangan perangkat lunak dan gim, kami juga memperluas batas kreativitas untuk menciptakan produk inovatif yang solutif dan berdampak nyata.',
-    'Dari sarung tangan pintar penerjemah isyarat SIBI, platform digital, tas unik berbahan perpaduan kain dan kabel, hingga kemasan dan label kertas yang dapat tumbuh menjadi tanaman (plantable paper), setiap karya kami didedikasikan untuk memberikan solusi terbaik, membantu sesama, dan menjaga kelestarian lingkungan.',
+    'Dari sarung tangan pintar penerjemah isyarat SIBI dan BISINDO, platform digital, tas unik berbahan perpaduan kain dan kabel, hingga kemasan dan label kertas yang dapat tumbuh menjadi tanaman (plantable paper), setiap karya kami didedikasikan untuk memberikan solusi terbaik, membantu sesama, dan menjaga kelestarian lingkungan.',
   ],
   values: [
     {
@@ -149,12 +149,22 @@ export const siteConfig: SiteConfig = {
     {
       question: 'Apakah SmartGloves dijual?',
       answer:
-        'Belum. SmartGloves adalah prototipe edukasi untuk isyarat SIBI. Kamu bisa mencobanya langsung di situs SmartGloves.',
+        'Belum. SmartGloves adalah prototipe edukasi untuk isyarat SIBI dan BISINDO. Kamu bisa mencobanya langsung di situs SmartGloves.',
     },
     {
       question: 'Apakah data pribadiku aman?',
       answer:
         'Data hanya dipakai untuk memproses pesanan, disimpan sekitar 12 bulan, dan bukti transfer hanya bisa dilihat admin. Baca selengkapnya di halaman Kebijakan privasi.',
+    },
+    {
+      question: 'Bagaimana kalau aku lupa kode pesananku?',
+      answer:
+        'Buka halaman Pesanan. Pesanan yang dibuat di perangkat yang sama tampil otomatis tanpa mengetik kode. Kalau berganti perangkat, hubungi admin lewat WhatsApp dengan nomor HP yang kamu pakai saat memesan.',
+    },
+    {
+      question: 'Bagaimana kalau jadwal pengantaranku berubah?',
+      answer:
+        'Admin memperbarui perkiraan jadwal dan catatan langsung di halaman pesananmu, dan halaman itu menyegarkan diri tiap 30 detik. Untuk perubahan penting, admin juga bisa menghubungimu lewat WhatsApp.',
     },
   ],
   testimonials: [],
@@ -164,7 +174,7 @@ export const siteConfig: SiteConfig = {
       url: 'https://smartgloves.vercel.app',
       status: 'Prototipe edukasi',
       description:
-        'Sarung tangan pintar yang menerjemahkan isyarat tangan SIBI menjadi teks dan suara. Dikembangkan oleh tim kami dan diuji secara terbuka.',
+        'Sarung tangan pintar yang menerjemahkan isyarat tangan SIBI dan BISINDO menjadi teks dan suara. Dikembangkan oleh tim kami dan diuji secara terbuka.',
     },
   ],
   contact: {

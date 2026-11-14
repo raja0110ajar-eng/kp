@@ -1,14 +1,13 @@
 import Link from 'next/link';
 import { AlertTriangle, Check, MessageCircle, Upload } from 'lucide-react';
 import { StatusBadge } from '@/components/admin/StatusBadge';
+import { OrderCodeCard } from '@/components/orders/OrderCodeCard';
 import { siteConfig } from '@/config/site';
 import { DELIVERY_AREA_LABEL, PAYMENT_METHOD_LABEL } from '@/lib/admin/labels';
 import { formatDateTime, formatRupiah } from '@/lib/format';
-import {
-  BUYER_ORDER_STATUS,
-  buildTimeline,
-  getPaymentStatusText,
-} from '@/lib/orders/labels';
+import { BUYER_ORDER_STATUS, buildTimeline, getPaymentStatusText } from '@/lib/orders/labels';
+import { formatOrderCode } from '@/lib/orders/order-code';
+import { formatEtaDate } from '@/lib/orders/schedule';
 import { buildWhatsAppLink } from '@/lib/whatsapp';
 import type { TrackedOrderDetail } from '@/types/tracking';
 
@@ -24,14 +23,23 @@ export function OrderStatusView({ order }: { order: TrackedOrderDetail }) {
   const doneCount = steps.filter((step) => step.state === 'done').length;
   const progress = Math.round((doneCount / (steps.length - 1)) * 100);
 
+  const isNew = order.status === 'awaiting_payment' || order.status === 'awaiting_verification';
   const needsProof = !isCod && order.status === 'awaiting_payment';
   const rejected = payment.verification_status === 'rejected';
+  const showSchedule =
+    order.status === 'processing' || order.status === 'ready' || order.status === 'delivering';
+
+  const { delivery } = siteConfig;
+  const deliveryWindow =
+    order.delivery_area === 'school'
+      ? `${delivery.school.method}, ${delivery.school.schedule.toLowerCase()}.`
+      : `${delivery.outside.weekdaySchedule}; ${delivery.outside.weekendSchedule.toLowerCase()}.`;
 
   const whatsappUrl =
     siteConfig.contact.whatsapp !== ''
       ? buildWhatsAppLink(
           siteConfig.contact.whatsapp,
-          `Halo Karsa Pandiga, saya ingin menanyakan pesanan ${order.order_code}.`
+          `Halo Karsa Pandiga, saya ingin menanyakan pesanan ${formatOrderCode(order.order_code)}.`
         )
       : '';
 
@@ -39,12 +47,16 @@ export function OrderStatusView({ order }: { order: TrackedOrderDetail }) {
     <div className="space-y-5">
       <header className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-extrabold tracking-tight">Pesanan {order.order_code}</h1>
+          <h1 className="text-2xl font-extrabold tracking-tight">
+            Pesanan {formatOrderCode(order.order_code)}
+          </h1>
           <p className="text-sm text-muted">Dibuat {formatDateTime(order.created_at)}</p>
           <p className="text-xs text-muted">Diperbarui {formatDateTime(order.updated_at)}</p>
         </div>
         <StatusBadge tone={statusMeta.tone}>{statusMeta.label}</StatusBadge>
       </header>
+
+      {isNew ? <OrderCodeCard orderCode={order.order_code} /> : null}
 
       {cancelled ? (
         <div className="rounded-2xl border border-danger-line bg-danger-soft p-5 text-sm text-danger-ink">
@@ -57,7 +69,7 @@ export function OrderStatusView({ order }: { order: TrackedOrderDetail }) {
           <div className="mb-5 h-1.5 overflow-hidden rounded-full bg-sunken">
             <div className="h-full bg-primary transition-all" style={{ width: `${progress}%` }} />
           </div>
-          <ol className="grid gap-3 sm:grid-cols-5">
+          <ol className="grid gap-3 sm:grid-cols-6">
             {steps.map((step, index) => (
               <li
                 key={step.key}
@@ -76,9 +88,7 @@ export function OrderStatusView({ order }: { order: TrackedOrderDetail }) {
                   {step.state === 'done' ? <Check className="h-4 w-4" aria-hidden /> : index + 1}
                 </span>
                 <span
-                  className={`text-sm ${
-                    step.state === 'upcoming' ? 'text-muted' : 'font-semibold text-ink'
-                  }`}
+                  className={`text-sm ${step.state === 'upcoming' ? 'text-muted' : 'font-semibold text-ink'}`}
                 >
                   {step.label}
                 </span>
@@ -87,6 +97,31 @@ export function OrderStatusView({ order }: { order: TrackedOrderDetail }) {
           </ol>
         </section>
       )}
+
+      {showSchedule ? (
+        <section className={`${cardClass} space-y-2`} aria-label="Jadwal pengantaran">
+          <h2 className="text-lg font-bold">Jadwal pengantaran</h2>
+          {order.eta_date ? (
+            <p>
+              Perkiraan diantar mulai <strong>{formatEtaDate(order.eta_date)}</strong>
+              {order.eta_note ? ` · ${order.eta_note}` : ''}
+            </p>
+          ) : (
+            <p className="text-muted">Jadwal belum ditentukan. Admin akan memperbaruinya di sini.</p>
+          )}
+          {order.customer_note ? (
+            <p className="rounded-lg bg-soft p-3 text-sm text-ink-soft">
+              Catatan dari admin: {order.customer_note}
+            </p>
+          ) : null}
+          <p className="text-sm text-muted">Waktu pengantaran: {deliveryWindow}</p>
+          <p className="text-xs text-muted">
+            {order.schedule_updated_at
+              ? `Jadwal diperbarui admin pada ${formatDateTime(order.schedule_updated_at)}.`
+              : 'Perkiraan awal dihitung otomatis dari estimasi pengerjaan produk. Admin akan memperbarui bila berubah.'}
+          </p>
+        </section>
+      ) : null}
 
       {needsProof ? (
         <div className="space-y-3 rounded-2xl border border-accent bg-accent/5 p-5">
@@ -101,7 +136,7 @@ export function OrderStatusView({ order }: { order: TrackedOrderDetail }) {
           ) : null}
           <Link
             href={`/orders/${order.order_code}/pay`}
-            className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-primary-hover"
+            className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-primary px-4 text-sm font-semibold text-white transition hover:bg-primary-hover"
           >
             <Upload className="h-4 w-4" aria-hidden />
             {rejected ? 'Unggah ulang bukti' : 'Lanjutkan pembayaran'}
@@ -113,15 +148,10 @@ export function OrderStatusView({ order }: { order: TrackedOrderDetail }) {
         <h2 className="text-lg font-bold">Item pesanan</h2>
         <ul className="divide-y divide-line text-sm">
           {order.items.map((item) => (
-            <li
-              key={`${item.product_name}-${item.unit_price}`}
-              className="flex justify-between gap-3 py-2"
-            >
+            <li key={`${item.product_name}-${item.unit_price}`} className="flex justify-between gap-3 py-2">
               <span>
                 {item.product_name} × {item.quantity}
-                <span className="block text-xs text-muted">
-                  {formatRupiah(item.unit_price)} / item
-                </span>
+                <span className="block text-xs text-muted">{formatRupiah(item.unit_price)} / item</span>
               </span>
               <span className="font-semibold">{formatRupiah(item.line_total)}</span>
             </li>
@@ -190,7 +220,7 @@ export function OrderStatusView({ order }: { order: TrackedOrderDetail }) {
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-lg border border-line-strong bg-surface px-4 py-2 text-sm font-semibold transition hover:bg-soft"
+            className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-line-strong bg-surface px-4 text-sm font-semibold transition hover:bg-soft"
           >
             <MessageCircle className="h-4 w-4" aria-hidden />
             Tanya admin via WhatsApp

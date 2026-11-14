@@ -5,6 +5,7 @@ export type OrderStatus =
   | 'awaiting_payment'
   | 'awaiting_verification'
   | 'processing'
+  | 'ready'
   | 'delivering'
   | 'completed'
   | 'cancelled';

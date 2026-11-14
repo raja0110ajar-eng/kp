@@ -91,6 +91,43 @@ dan biaya antar) di bagian bawah halaman Laporan. Ekspor CSV tidak memuat data p
 Bila Excel menampilkan semua kolom dalam satu kolom, buka lewat Data, Dari Teks/CSV, lalu pilih pemisah
 titik koma.
 
+## 6c. Notifikasi pesanan baru (Telegram)
+
+Setiap pesanan baru dan setiap bukti transfer yang masuk mengirim pesan ke grup Telegram admin, lengkap
+dengan tombol ke dashboard. Pesannya hanya memuat kode pesanan, total, metode bayar, jumlah item, dan area
+pengiriman (tanpa nama, nomor HP, atau alamat).
+
+Cek rutin: kirim pesan uji sebulan sekali agar tahu notifikasi masih hidup.
+
+```sql
+select public.notify_admins('Tes notifikasi Karsa Pandiga', '/admin');
+```
+
+Bila pesan tidak muncul:
+
+1. `select * from net._http_response order by id desc limit 5;` baca status dan isi responsnya.
+2. Token ditolak: buat token baru lewat `@BotFather` (`/revoke`), lalu perbarui `telegram_bot_token` di tabel
+   `app_secrets`.
+3. `chat not found` atau `Group migrated to supergroup`: ambil `chat_id` baru lewat `getUpdates` dan perbarui
+   `telegram_chat_id`.
+4. Notifikasi tidak pernah menggagalkan pesanan. Bila mati, pesanan tetap tercatat, jadi buka dashboard
+   secara berkala sebagai cadangan (lencana angka di menu Verifikasi).
+
+## 6d. Jadwal dan status pesanan
+
+Setelah pembayaran diverifikasi, sistem mengisi perkiraan jadwal otomatis (tanggal verifikasi ditambah estimasi
+pengerjaan terlama, minimal 1 hari). Buka detail pesanan, panel **Jadwal dan kabar untuk pembeli**, untuk
+mengubah tanggal, keterangan waktu, dan catatan. Pembeli melihatnya di halaman pesanan. Tombol "Kabari via
+WhatsApp" membuka pesan yang sudah terisi (simpan dulu sebelum mengirim).
+
+Tahap Diproses, Siap diantar, dan Diantar boleh berpindah ke arah mana pun. Selesai dan Dibatalkan final.
+
+## 6e. Pesanan yang tersimpan di perangkat pembeli
+
+Halaman Pesanan menampilkan pesanan yang dibuat di perangkat yang sama tanpa mengetik kode. Datanya hanya ada
+di browser pembeli (kode dan nomor HP). Pembeli yang berganti perangkat atau lupa kode cukup menghubungi admin
+dengan nomor HP yang dipakai saat memesan; cari pesanannya lewat kolom pencarian di menu Pesanan.
+
 ## 7. Pelacakan pembeli terkunci
 
 Pembeli yang salah memasukkan nomor HP lima kali terkunci 15 menit. Untuk membukanya, jalankan di

@@ -1,11 +1,15 @@
 'use client';
 
 import { useState, type FormEvent } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 
 type Mode = 'signin' | 'signup';
+
+const inputClass =
+  'mt-1 w-full rounded-lg border border-line-strong bg-surface px-3 py-3 text-base text-ink focus:border-primary';
 
 export function LoginForm({ next }: { next: string }) {
   const router = useRouter();
@@ -14,6 +18,14 @@ export function LoginForm({ next }: { next: string }) {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+
+  // Admin yang masuk tanpa tujuan khusus langsung diarahkan ke dashboard.
+  async function goAfterLogin() {
+    const supabase = createClient();
+    const { data: isAdmin } = await supabase.rpc('is_admin');
+    router.replace(isAdmin === true && next === '/' ? '/admin' : next);
+    router.refresh();
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -28,8 +40,7 @@ export function LoginForm({ next }: { next: string }) {
         setLoading(false);
         return;
       }
-      router.replace(next);
-      router.refresh();
+      await goAfterLogin();
       return;
     }
 
@@ -40,8 +51,7 @@ export function LoginForm({ next }: { next: string }) {
       return;
     }
     if (data.session) {
-      router.replace(next);
-      router.refresh();
+      await goAfterLogin();
       return;
     }
     setMessage('Pendaftaran berhasil. Cek email kamu untuk konfirmasi, lalu masuk.');
@@ -59,8 +69,8 @@ export function LoginForm({ next }: { next: string }) {
           required
           autoComplete="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="mt-1 w-full rounded-lg border border-line-strong px-3 py-2 focus:border-primary"
+          onChange={(event) => setEmail(event.target.value)}
+          className={inputClass}
         />
       </label>
 
@@ -72,8 +82,8 @@ export function LoginForm({ next }: { next: string }) {
           minLength={8}
           autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="mt-1 w-full rounded-lg border border-line-strong px-3 py-2 focus:border-primary"
+          onChange={(event) => setPassword(event.target.value)}
+          className={inputClass}
         />
       </label>
 
@@ -82,7 +92,7 @@ export function LoginForm({ next }: { next: string }) {
       <button
         type="submit"
         disabled={loading}
-        className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2 font-semibold text-white transition hover:bg-primary-hover disabled:opacity-60"
+        className="flex min-h-11 w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 font-semibold text-white transition hover:bg-primary-hover disabled:opacity-60"
       >
         {loading ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : null}
         {mode === 'signin' ? 'Masuk' : 'Daftar'}
@@ -94,10 +104,14 @@ export function LoginForm({ next }: { next: string }) {
           setMode(mode === 'signin' ? 'signup' : 'signin');
           setMessage(null);
         }}
-        className="w-full text-sm text-muted underline"
+        className="min-h-11 w-full text-sm text-muted underline"
       >
         {mode === 'signin' ? 'Belum punya akun? Daftar' : 'Sudah punya akun? Masuk'}
       </button>
+
+      <Link href="/" className="block text-center text-sm font-semibold text-link underline">
+        Kembali ke toko
+      </Link>
     </form>
   );
 }

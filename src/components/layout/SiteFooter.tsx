@@ -42,6 +42,11 @@ export function SiteFooter() {
                 Kebijakan privasi
               </Link>
             </li>
+            <li>
+              <Link href="/login" className={linkClass}>
+                Masuk atau daftar
+              </Link>
+            </li>
           </ul>
         </nav>
 

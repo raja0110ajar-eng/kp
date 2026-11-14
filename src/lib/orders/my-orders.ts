@@ -101,6 +101,10 @@ interface RawOwnedOrder {
   total: number;
   created_at: string;
   updated_at: string;
+  eta_date: string | null;
+  eta_note: string | null;
+  customer_note: string | null;
+  schedule_updated_at: string | null;
   order_items: RawOrderItem[] | null;
   payments: RawOwnedPayment | RawOwnedPayment[] | null;
 }
@@ -114,7 +118,7 @@ export async function getMyOrderByCode(
   const { data, error } = await supabase
     .from('orders')
     .select(
-      'id, order_code, status, delivery_area, customer_name, delivery_address, shipping_zone_name, notes, subtotal, shipping_fee, total, created_at, updated_at, order_items(product_name, unit_price, quantity, line_total), payments(id, method, expected_amount, ai_status, verification_status, admin_note)'
+      'id, order_code, status, delivery_area, customer_name, delivery_address, shipping_zone_name, notes, subtotal, shipping_fee, total, created_at, updated_at, eta_date, eta_note, customer_note, schedule_updated_at, order_items(product_name, unit_price, quantity, line_total), payments(id, method, expected_amount, ai_status, verification_status, admin_note)'
     )
     .eq('order_code', orderCode)
     .eq('user_id', userId)
@@ -140,6 +144,10 @@ export async function getMyOrderByCode(
     total: row.total,
     created_at: row.created_at,
     updated_at: row.updated_at,
+    eta_date: row.eta_date,
+    eta_note: row.eta_note,
+    customer_note: row.customer_note,
+    schedule_updated_at: row.schedule_updated_at,
     items: [...(row.order_items ?? [])].sort((a, b) => a.product_name.localeCompare(b.product_name)),
     payment: {
       id: payment.id,

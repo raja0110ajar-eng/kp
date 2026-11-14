@@ -38,6 +38,7 @@ const SECTIONS: readonly PolicySection[] = [
       'Penyedia layanan yang memproses data atas nama kami: Supabase (database, penyimpanan file, dan autentikasi) serta Vercel (hosting).',
       'Bukti transfer disimpan secara privat dan hanya bisa dibuka admin.',
       'Pengunjung situs, hanya untuk ulasan yang sudah disetujui admin (nama depan, rating, dan tulisan).',
+      'Telegram, untuk pemberitahuan internal ke admin. Pesannya hanya berisi kode pesanan, total, metode bayar, jumlah item, dan area pengiriman. Nama, nomor HP, dan alamat tidak dikirim lewat Telegram.',
     ],
   },
   {
@@ -49,8 +50,7 @@ const SECTIONS: readonly PolicySection[] = [
   {
     heading: 'Data di perangkatmu',
     paragraphs: [
-      'Situs menyimpan isi keranjang dan pilihan tema di penyimpanan lokal browser. Nomor HP disimpan sementara selama tab terbuka agar kamu tidak mengetik ulang saat membayar atau melacak. Sesi login disimpan bila kamu masuk dengan akun. Kami tidak memakai cookie iklan maupun pelacak pihak ketiga.',
-    ],
+      'Situs menyimpan isi keranjang dan pilihan tema di penyimpanan lokal browser. Saat memesan, kode pesanan dan nomor HP-mu juga diingat di perangkat itu agar halaman Pesanan tampil tanpa mengetik kode; kamu bisa menghapusnya kapan saja lewat tombol "Hapus dari perangkat ini". Jangan biarkan pesanan tersimpan di komputer bersama. Nomor HP juga disimpan sementara selama tab terbuka. Sesi login disimpan bila kamu masuk dengan akun. Kami tidak memakai cookie iklan maupun pelacak pihak ketiga.',    ],
   },
   {
     heading: 'Berapa lama data disimpan',

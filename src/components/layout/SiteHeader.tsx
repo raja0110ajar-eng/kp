@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { CartIndicator } from '@/components/cart/CartIndicator';
+import { AccountMenu } from '@/components/layout/AccountMenu';
 import { BrandLogo } from '@/components/layout/BrandLogo';
 import { ThemeToggle } from '@/components/layout/ThemeToggle';
 
@@ -67,7 +68,10 @@ export function SiteHeader() {
             })}
           </nav>
           <CartIndicator />
-          <ThemeToggle />
+          <div className="hidden sm:block">
+            <ThemeToggle />
+          </div>
+          <AccountMenu />
         </div>
       </div>
     </header>

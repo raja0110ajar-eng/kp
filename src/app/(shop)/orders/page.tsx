@@ -2,10 +2,12 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Pagination } from '@/components/admin/Pagination';
 import { StatusBadge } from '@/components/admin/StatusBadge';
+import { SavedOrdersPanel } from '@/components/orders/SavedOrdersPanel';
 import { TrackLookupForm } from '@/components/orders/TrackLookupForm';
 import { PAYMENT_METHOD_LABEL } from '@/lib/admin/labels';
 import { formatDateTime, formatRupiah } from '@/lib/format';
 import { BUYER_ORDER_STATUS } from '@/lib/orders/labels';
+import { formatOrderCode } from '@/lib/orders/order-code';
 import {
   MY_ORDERS_PAGE_SIZE,
   getCurrentUserId,
@@ -37,9 +39,11 @@ export default async function OrdersPage({
         <p className="text-sm text-muted">
           {list
             ? 'Pesanan yang kamu buat saat login ada di bawah ini.'
-            : 'Lacak pesananmu dengan kode pesanan dan nomor HP, tanpa perlu login.'}
+            : 'Lacak pesananmu tanpa perlu login.'}
         </p>
       </header>
+
+      <SavedOrdersPanel />
 
       {list ? (
         <section className="space-y-4" aria-label="Daftar pesanan saya">
@@ -59,12 +63,10 @@ export default async function OrdersPage({
                       className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-line bg-surface p-4 transition hover:shadow-md"
                     >
                       <div>
-                        <p className="font-extrabold text-link">{order.orderCode}</p>
+                        <p className="font-extrabold text-link">{formatOrderCode(order.orderCode)}</p>
                         <p className="text-xs text-muted">{formatDateTime(order.createdAt)}</p>
                         {order.paymentMethod ? (
-                          <p className="text-xs text-muted">
-                            {PAYMENT_METHOD_LABEL[order.paymentMethod]}
-                          </p>
+                          <p className="text-xs text-muted">{PAYMENT_METHOD_LABEL[order.paymentMethod]}</p>
                         ) : null}
                       </div>
                       <div className="text-right">
@@ -88,7 +90,10 @@ export default async function OrdersPage({
         </section>
       ) : null}
 
-      <TrackLookupForm />
+      <section className="space-y-2">
+        <h2 className="text-lg font-bold">Lacak dengan kode pesanan</h2>
+        <TrackLookupForm />
+      </section>
 
       {!list ? (
         <p className="text-sm text-muted">

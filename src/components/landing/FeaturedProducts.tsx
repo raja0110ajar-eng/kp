@@ -3,6 +3,8 @@ import { ProductCard } from '@/components/catalog/ProductCard';
 import type { ProductSummary } from '@/types/catalog';
 
 export function FeaturedProducts({ products }: { products: ProductSummary[] }) {
+  if (products.length === 0) return null;
+
   return (
     <section id="produk" className="py-16 sm:py-20">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -13,17 +15,11 @@ export function FeaturedProducts({ products }: { products: ProductSummary[] }) {
           </Link>
         </div>
 
-        {products.length === 0 ? (
-          <p className="mt-8 rounded-2xl bg-soft p-8 text-center text-muted">
-            Produk sedang disiapkan. Segera hadir.
-          </p>
-        ) : (
-          <ul className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
-            {products.map((product, index) => (
-              <ProductCard key={product.id} product={product} index={index} />
-            ))}
-          </ul>
-        )}
+        <ul className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
+          {products.map((product, index) => (
+            <ProductCard key={product.id} product={product} index={index} />
+          ))}
+        </ul>
       </div>
     </section>
   );

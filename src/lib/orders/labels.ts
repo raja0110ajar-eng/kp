@@ -10,6 +10,7 @@ export const BUYER_ORDER_STATUS: Record<OrderStatus, BuyerStatusMeta> = {
   awaiting_payment: { label: 'Menunggu pembayaran', tone: 'neutral' },
   awaiting_verification: { label: 'Menunggu konfirmasi admin', tone: 'orange' },
   processing: { label: 'Pesanan diproses', tone: 'blue' },
+  ready: { label: 'Siap diantar', tone: 'blue' },
   delivering: { label: 'Sedang diantar', tone: 'blue' },
   completed: { label: 'Selesai', tone: 'green' },
   cancelled: { label: 'Dibatalkan', tone: 'red' },
@@ -41,17 +42,18 @@ const STATUS_INDEX: Record<OrderStatus, number> = {
   awaiting_payment: 0,
   awaiting_verification: 1,
   processing: 2,
-  delivering: 3,
-  completed: 4,
+  ready: 3,
+  delivering: 4,
+  completed: 5,
   cancelled: -1,
 };
 
-/** Lima tahap pesanan. Untuk COD, dua tahap awal diberi nama yang sesuai alurnya. */
+/** Enam tahap pesanan. "Siap diantar" opsional: bila dilewati admin, tahap itu tetap tampil selesai. */
 export function buildTimeline(status: OrderStatus, method: PaymentMethod): TimelineStep[] {
   const labels =
     method === 'cod'
-      ? ['Pesanan dibuat', 'Konfirmasi admin', 'Diproses', 'Diantar', 'Selesai']
-      : ['Menunggu pembayaran', 'Verifikasi pembayaran', 'Diproses', 'Diantar', 'Selesai'];
+      ? ['Pesanan dibuat', 'Konfirmasi admin', 'Diproses', 'Siap diantar', 'Diantar', 'Selesai']
+      : ['Menunggu pembayaran', 'Verifikasi pembayaran', 'Diproses', 'Siap diantar', 'Diantar', 'Selesai'];
   const currentIndex = STATUS_INDEX[status];
 
   return labels.map((label, index) => {

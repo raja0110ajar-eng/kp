@@ -3,7 +3,7 @@ import { AboutSection } from '@/components/landing/AboutSection';
 import { ContactSection } from '@/components/landing/ContactSection';
 import { Faq } from '@/components/landing/Faq';
 import { FeaturedProducts } from '@/components/landing/FeaturedProducts';
-import { Hero, type HeroPhoto } from '@/components/landing/Hero';
+import { Hero } from '@/components/landing/Hero';
 import { HowToOrder } from '@/components/landing/HowToOrder';
 import { InnovationShowcase } from '@/components/landing/InnovationShowcase';
 import { OcrHighlight } from '@/components/landing/OcrHighlight';
@@ -25,14 +25,9 @@ export const revalidate = 60;
 export default async function LandingPage() {
   const [products, reviews] = await Promise.all([getFeaturedProducts(4), getFeaturedReviews(3)]);
 
-  const photos: HeroPhoto[] = [];
-  for (const product of products) {
-    if (product.image_path) photos.push({ path: product.image_path, alt: product.name });
-  }
-
   return (
     <main>
-      <Hero photos={photos} />
+      <Hero />
       <FeaturedProducts products={products} />
       <Testimonials reviews={reviews} />
       <InnovationShowcase />

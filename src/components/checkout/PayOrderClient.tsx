@@ -1,16 +1,19 @@
 'use client';
 
 import { useCallback, useEffect, useState, type FormEvent } from 'react';
+import Link from 'next/link';
 import { Loader2 } from 'lucide-react';
 import { PaymentDestination } from '@/components/checkout/PaymentDestination';
+import { PaymentNextSteps } from '@/components/checkout/PaymentNextSteps';
 import { ProofUploader } from '@/components/checkout/ProofUploader';
+import { OrderCodeCard } from '@/components/orders/OrderCodeCard';
 import { formatRupiah } from '@/lib/format';
 import { trackOrder } from '@/lib/orders/api';
 import { getOrderErrorMessage } from '@/lib/orders/errors';
+import { formatOrderCode } from '@/lib/orders/order-code';
 import { recallOrderPhone, rememberOrderPhone } from '@/lib/orders/order-session';
 import type { PaymentSetting } from '@/types/catalog';
 import type { PaymentMethod, TrackedOrder, VerificationStatus } from '@/types/domain';
-import { PaymentNextSteps } from '@/components/checkout/PaymentNextSteps';
 
 type ViewState =
   | { kind: 'loading' }
@@ -89,7 +92,7 @@ export function PayOrderClient({ orderCode, paymentSettings }: PayOrderClientPro
   if (view.kind === 'need-phone') {
     return (
       <form onSubmit={handlePhoneSubmit} className="space-y-4">
-        <h1 className="text-2xl font-bold">Pesanan {orderCode.toUpperCase()}</h1>
+        <h1 className="text-2xl font-bold">Pesanan {formatOrderCode(orderCode.toUpperCase())}</h1>
         <p className="text-sm text-muted">Masukkan nomor HP yang kamu pakai saat checkout.</p>
         <input
           type="tel"
@@ -99,13 +102,13 @@ export function PayOrderClient({ orderCode, paymentSettings }: PayOrderClientPro
           aria-label="Nomor HP"
           value={phoneInput}
           onChange={(event) => setPhoneInput(event.target.value)}
-          className="w-full rounded-lg border border-line-strong px-3 py-2 focus:border-primary"
+          className="w-full rounded-lg border border-line-strong bg-surface px-3 py-3 text-base text-ink focus:border-primary"
         />
-        {view.error ? <p className="text-sm text-accent-ink">{view.error}</p> : null}
+        {view.error ? <p className="text-sm text-danger-ink">{view.error}</p> : null}
         <button
           type="submit"
           disabled={submitting}
-          className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2 font-semibold text-white transition hover:bg-primary-hover disabled:opacity-60"
+          className="flex min-h-11 w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 font-semibold text-white transition hover:bg-primary-hover disabled:opacity-60"
         >
           {submitting ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : null}
           Lanjutkan
@@ -121,12 +124,20 @@ export function PayOrderClient({ orderCode, paymentSettings }: PayOrderClientPro
   return (
     <div className="space-y-5">
       <header>
-        <h1 className="text-2xl font-bold">Pesanan {order.order_code}</h1>
+        <h1 className="text-2xl font-bold">Pesanan {formatOrderCode(order.order_code)}</h1>
         <p className="text-sm text-muted">
           {METHOD_LABEL[payment.method]} · Total {formatRupiah(order.total)} ·{' '}
           {VERIFICATION_LABEL[payment.verification_status]}
         </p>
+        <Link
+          href={`/orders/${order.order_code}`}
+          className="mt-1 inline-block text-sm font-semibold text-link underline"
+        >
+          Lihat status pesanan
+        </Link>
       </header>
+
+      <OrderCodeCard orderCode={order.order_code} />
 
       {payment.verification_status === 'rejected' && payment.admin_note ? (
         <p className="rounded-lg bg-soft p-3 text-sm text-accent-ink">
@@ -145,6 +156,7 @@ export function PayOrderClient({ orderCode, paymentSettings }: PayOrderClientPro
         <p className="text-ink-soft">Pembayaran sudah terverifikasi. Pesananmu sedang diproses.</p>
       ) : (
         <>
+          <PaymentNextSteps expectedAmount={payment.expected_amount} />
           {destination ? (
             <PaymentDestination setting={destination} />
           ) : (

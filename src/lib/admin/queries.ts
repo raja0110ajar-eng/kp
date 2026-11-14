@@ -1,6 +1,7 @@
 import { requireAdmin } from '@/lib/auth/require-admin';
 import { createClient } from '@/lib/supabase/server';
 import { normalizePhone } from '@/lib/phone';
+import { normalizeOrderCode } from '@/lib/orders/order-code';
 import type {
   AdminOrderDetail,
   AdminOrderList,
@@ -167,8 +168,11 @@ export async function getAdminOrders(params: {
   const search = sanitizeOrderSearch(params.search);
   if (search) {
     const phoneTerm = /^[0-9+\s-]+$/.test(search) ? normalizePhone(search) : search;
+    const codeTerm = /^kp[-\s]?[a-z0-9]{3}[-\s]?[a-z0-9]{3}$/i.test(search)
+      ? normalizeOrderCode(search)
+      : search;
     request = request.or(
-      `order_code.ilike.%${search}%,customer_name.ilike.%${search}%,customer_phone.ilike.%${phoneTerm}%`
+      `order_code.ilike.%${codeTerm}%,customer_name.ilike.%${search}%,customer_phone.ilike.%${phoneTerm}%`
     );
   }
 
@@ -489,7 +493,10 @@ export async function getDashboardSummary(): Promise<DashboardSummary> {
         .eq('verification_status', 'awaiting_review')
     ),
     readCount(
-      supabase.from('orders').select('id', { count: 'exact', head: true }).eq('status', 'processing')
+      supabase
+        .from('orders')
+        .select('id', { count: 'exact', head: true })
+        .in('status', ['processing', 'ready'])
     ),
     readCount(
       supabase.from('orders').select('id', { count: 'exact', head: true }).eq('status', 'delivering')

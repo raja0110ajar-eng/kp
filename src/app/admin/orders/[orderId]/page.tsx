@@ -2,9 +2,9 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, MessageCircle } from 'lucide-react';
 import { OrderStatusActions } from '@/components/admin/OrderStatusActions';
+import { ScheduleForm } from '@/components/admin/ScheduleForm';
 import { StatusBadge } from '@/components/admin/StatusBadge';
 import { cardClass, secondaryButtonClass } from '@/components/admin/styles';
-import { getAdminOrderDetail } from '@/lib/admin/queries';
 import {
   AI_STATUS_META,
   DELIVERY_AREA_LABEL,
@@ -12,8 +12,11 @@ import {
   PAYMENT_METHOD_LABEL,
   VERIFICATION_META,
 } from '@/lib/admin/labels';
+import { getAdminOrderDetail } from '@/lib/admin/queries';
+import { getOrderSchedule } from '@/lib/admin/schedule-queries';
 import { UUID_REGEX } from '@/lib/admin/validation';
 import { formatDateTime, formatRupiah } from '@/lib/format';
+import { formatOrderCode } from '@/lib/orders/order-code';
 import { toWhatsAppUrl } from '@/lib/phone';
 
 export default async function AdminOrderDetailPage({
@@ -27,9 +30,12 @@ export default async function AdminOrderDetailPage({
   const order = await getAdminOrderDetail(orderId);
   if (!order) notFound();
 
+  const schedule = await getOrderSchedule(order.id);
   const statusMeta = ORDER_STATUS_META[order.status];
   const whatsappUrl = toWhatsAppUrl(order.customerPhone);
   const payment = order.payment;
+  const scheduleEditable =
+    order.status === 'processing' || order.status === 'ready' || order.status === 'delivering';
 
   return (
     <main className="mx-auto max-w-4xl space-y-6">
@@ -43,7 +49,7 @@ export default async function AdminOrderDetailPage({
 
       <header className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-extrabold tracking-tight">{order.orderCode}</h1>
+          <h1 className="text-2xl font-extrabold tracking-tight">{formatOrderCode(order.orderCode)}</h1>
           <p className="text-sm text-muted">Dibuat {formatDateTime(order.createdAt)}</p>
         </div>
         <StatusBadge tone={statusMeta.tone}>{statusMeta.label}</StatusBadge>
@@ -52,6 +58,25 @@ export default async function AdminOrderDetailPage({
       <section className={`${cardClass} space-y-3`}>
         <h2 className="text-lg font-bold">Ubah status</h2>
         <OrderStatusActions orderId={order.id} status={order.status} />
+      </section>
+
+      <section className={`${cardClass} space-y-3`}>
+        <h2 className="text-lg font-bold">Jadwal dan kabar untuk pembeli</h2>
+        {scheduleEditable ? (
+          <ScheduleForm
+            orderId={order.id}
+            orderCode={order.orderCode}
+            customerName={order.customerName}
+            customerPhone={order.customerPhone}
+            schedule={schedule}
+          />
+        ) : (
+          <p className="text-sm text-muted">
+            {order.status === 'completed' || order.status === 'cancelled'
+              ? 'Jadwal tidak bisa diubah setelah pesanan selesai atau dibatalkan.'
+              : 'Jadwal bisa diatur setelah pembayaran terverifikasi.'}
+          </p>
+        )}
       </section>
 
       <section className={`${cardClass} space-y-3`}>

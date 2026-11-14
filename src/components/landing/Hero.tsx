@@ -1,20 +1,13 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { siteConfig } from '@/config/site';
-import { getPublicAssetUrl } from '@/lib/assets';
-
-export interface HeroPhoto {
-  path: string;
-  alt: string;
-}
 
 function delay(ms: number) {
   return { animationDelay: `${ms}ms` };
 }
 
-export function Hero({ photos }: { photos: HeroPhoto[] }) {
+export function Hero() {
   const { school } = siteConfig;
-  const shown = photos.slice(0, 3);
 
   return (
     <section className="relative overflow-hidden">
@@ -48,44 +41,17 @@ export function Hero({ photos }: { photos: HeroPhoto[] }) {
           </p>
         </div>
 
-        <div className="rise relative mx-auto w-full max-w-sm lg:max-w-none" style={delay(200)}>
-          {shown.length > 0 ? (
-            <div
-              className={`grid aspect-[4/5] gap-3 ${
-                shown.length === 1 ? 'grid-cols-1' : 'grid-cols-2 grid-rows-2'
-              }`}
-            >
-              {shown.map((photo, index) => (
-                <div
-                  key={photo.path}
-                  className={`relative overflow-hidden rounded-2xl bg-soft ${
-                    shown.length === 2 || (shown.length === 3 && index === 0) ? 'row-span-2' : ''
-                  }`}
-                >
-                  <Image
-                    src={getPublicAssetUrl(photo.path)}
-                    alt={photo.alt}
-                    fill
-                    sizes="(min-width: 1024px) 28vw, 50vw"
-                    className="object-cover"
-                  />
-                </div>
-              ))}
-            </div>
-          ) : (
-            <>
-              <div aria-hidden className="absolute -inset-4 rounded-[2.75rem] border border-accent/40" />
-              <Image
-                src="/logo.png"
-                alt="Logo Karsa Pandiga: bintang dan api di atas obor"
-                width={384}
-                height={384}
-                sizes="(min-width: 1024px) 384px, 70vw"
-                loading="eager"
-                className="relative h-auto w-full rounded-[22%] shadow-xl"
-              />
-            </>
-          )}
+        <div className="rise relative mx-auto w-full max-w-xs lg:max-w-sm" style={delay(200)}>
+          <div aria-hidden className="absolute -inset-4 rounded-[2.75rem] border border-accent/40" />
+          <Image
+            src="/logo.png"
+            alt="Logo Karsa Pandiga: bintang dan api di atas obor"
+            width={384}
+            height={384}
+            sizes="(min-width: 1024px) 384px, 70vw"
+            loading="eager"
+            className="relative h-auto w-full rounded-[22%] shadow-xl"
+          />
         </div>
       </div>
     </section>

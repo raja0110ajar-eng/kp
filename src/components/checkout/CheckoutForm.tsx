@@ -12,6 +12,7 @@ import { formatRupiah } from '@/lib/format';
 import { createOrder } from '@/lib/orders/api';
 import { getOrderErrorMessage } from '@/lib/orders/errors';
 import { rememberOrderPhone } from '@/lib/orders/order-session';
+import { saveOrderOnDevice } from '@/lib/orders/saved-orders';
 import { isValidPhone, normalizePhone } from '@/lib/phone';
 import type { PaymentSetting, ShippingZone } from '@/types/catalog';
 import type { DeliveryArea, PaymentMethod } from '@/types/domain';
@@ -306,6 +307,7 @@ export function CheckoutForm({ zones, paymentSettings }: CheckoutFormProps) {
       });
 
       rememberOrderPhone(result.order_code, normalizedPhone);
+      saveOrderOnDevice(result.order_code, normalizedPhone);
       setRedirecting(true);
       cart.clear();
       router.push(

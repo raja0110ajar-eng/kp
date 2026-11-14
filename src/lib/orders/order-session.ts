@@ -1,3 +1,5 @@
+import { getSavedPhone } from '@/lib/orders/saved-orders';
+
 // Nomor HP disimpan sementara di sessionStorage (hilang saat tab ditutup)
 // agar guest tidak perlu mengetik ulang di halaman upload bukti. Tidak pernah ditaruh di URL.
 function storageKey(orderCode: string): string {
@@ -12,10 +14,13 @@ export function rememberOrderPhone(orderCode: string, phone: string): void {
   }
 }
 
+/** Mencari nomor HP untuk sebuah pesanan: sesi tab ini dulu, lalu daftar pesanan di perangkat ini. */
 export function recallOrderPhone(orderCode: string): string | null {
   try {
-    return window.sessionStorage.getItem(storageKey(orderCode));
+    const fromSession = window.sessionStorage.getItem(storageKey(orderCode));
+    if (fromSession) return fromSession;
   } catch {
-    return null;
+    // Lanjut ke daftar perangkat.
   }
+  return getSavedPhone(orderCode.toUpperCase());
 }
